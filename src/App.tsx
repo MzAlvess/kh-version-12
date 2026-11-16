@@ -25,7 +25,7 @@ export default function App() {
     <ModalProvider user={user} handlers={handlers}>
       <Header user={user} />
       <RadioPanel {...radio} />
-      <Home />
+      <Home userNick={user.nick} />
       <Footer />
     </ModalProvider>
   )

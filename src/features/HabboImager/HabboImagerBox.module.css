@@ -1,0 +1,532 @@
+/* Layout: editor 495px | prévia 243px (13px entre), barra de peças embaixo */
+.imager {
+  display: grid;
+  grid-template-columns: minmax(0, 495fr) minmax(0, 243fr);
+  grid-template-areas:
+    'editor preview'
+    'worn worn';
+  gap: 13px;
+}
+
+.editor {
+  grid-area: editor;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ---------- abas (116 x 56) ---------- */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.tab,
+.sub {
+  border: 1px solid var(--nav-border);
+  border-radius: 6px;
+  background: var(--box-header);
+  box-shadow: inset 0 -3px 0 #c1d7e6;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.1;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+/* texto em 2 linhas como no layout ("Rosto e / corpo") */
+.tab {
+  height: 56px;
+  padding: 0 24px 3px;
+}
+
+.tab:hover,
+.sub:hover {
+  background: #e9f0f7;
+}
+
+.active,
+.active:hover {
+  background: var(--teal);
+  border-color: var(--teal-border);
+  box-shadow: inset 0 -3px 0 var(--teal-shadow);
+  color: #fff;
+}
+
+/* ---------- linha de gênero / categorias ---------- */
+.subrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 17px;
+  margin: 10px 0 12px;
+}
+
+.sub {
+  height: 50px;
+  padding: 0 14px 3px;
+}
+
+.square {
+  width: 50px;
+  padding: 0 0 3px;
+  display: grid;
+  place-items: center;
+}
+
+.square img {
+  max-width: none;
+}
+
+.subActive,
+.subActive:hover {
+  border-color: var(--teal);
+  background: #e2edf4;
+  box-shadow:
+    inset 0 0 0 1px var(--teal),
+    inset 0 -3px 0 #c1d7e6;
+}
+
+/* ---------- grade de peças (8 colunas de 52px, 3 linhas visíveis) ---------- */
+.parts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 52px);
+  grid-auto-rows: 52px;
+  justify-content: space-between;
+  gap: 11px 6px;
+  height: 178px;
+  padding-right: 6px;
+  overflow-y: auto;
+}
+
+.cell {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: #f0f0f0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cell:hover {
+  background: #e4e9ee;
+}
+
+.cell img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: none;
+}
+
+/* enquadramento da miniatura conforme a parte do corpo */
+.head img { object-position: 50% 45%; }
+.top img { object-position: 50% 58%; }
+.bottom img { object-position: 50% 100%; }
+
+.selected,
+.selected:hover {
+  background: #e2edf4;
+  box-shadow: inset 0 0 0 2px var(--teal);
+}
+
+.none {
+  position: absolute;
+  inset: 14px;
+  border: 3px solid #b7c2cc;
+  border-radius: 50%;
+}
+
+.none::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 3px;
+  background: #b7c2cc;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.hc {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  padding: 1px 3px;
+  border-radius: 3px;
+  border: 1px solid #a26a00;
+  background: #ffcb3a;
+  color: #7a4f00;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e6e8ea 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ---------- cores (painel de 98px) ---------- */
+.colors {
+  margin-top: 12px;
+  min-height: 98px;
+  padding: 10px 8px 12px 10px;
+  border: 1px solid var(--nav-border);
+  border-radius: 8px;
+  background: var(--box-header);
+  box-shadow: inset 0 -3px 0 #c1d7e6;
+}
+
+.slots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.slot {
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--nav-border);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.slotActive {
+  background: var(--teal);
+  border-color: var(--teal-border);
+  color: #fff;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 16px);
+  grid-auto-rows: 24px;
+  justify-content: space-between;
+  gap: 8px;
+  max-height: 56px;
+  padding-right: 10px;
+  overflow-y: auto;
+}
+
+.swatch {
+  position: relative;
+  width: 16px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.swatchActive {
+  outline: 2px solid var(--teal);
+  outline-offset: 1px;
+}
+
+.hcDot {
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid #a26a00;
+  background: #ffcb3a;
+}
+
+.note {
+  margin: 0;
+  padding: 18px 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ---------- prévia (243px) ---------- */
+.preview {
+  grid-area: preview;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 14px 20px 18px;
+  border: 1px solid var(--nav-border);
+  border-radius: 8px;
+  background: var(--box-header);
+  box-shadow: inset 0 -3px 0 #c1d7e6;
+}
+
+.stage {
+  position: relative;
+  height: 228px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.floor {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  width: 128px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #c0d7e6 0 34%, #d6e5ef 35% 62%, #e6eff6 63%);
+  transform: translateX(-50%);
+}
+
+.avatar {
+  position: relative;
+  max-width: none;
+  margin-bottom: 26px;
+}
+
+.stageLarge .avatar {
+  margin-bottom: 14px;
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 4px 0 14px;
+}
+
+.arrows button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.arrows button:active {
+  transform: scale(0.92);
+}
+
+.arrows img {
+  max-width: none;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+}
+
+.options legend {
+  width: 100%;
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.check input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.box {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid #c0d7e6;
+  background: #fff;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.check input:checked + .box {
+  background: #00b9f6;
+}
+
+.check input:focus-visible + .box {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+.warn {
+  margin: auto 0 0;
+  font-size: 12px;
+  color: var(--hub-red);
+}
+
+/* ---------- peças vestidas ---------- */
+.worn {
+  grid-area: worn;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  margin-top: 2px;
+  padding: 18px 0 8px 20px;
+  border-radius: 8px;
+  background: #daeaf5;
+  border: 1px solid #c8dceb;
+}
+
+.wornIcon {
+  flex-shrink: 0;
+  max-width: none;
+  margin-bottom: 8px;
+}
+
+.worn ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 12px 12px 0;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.worn li {
+  flex: 0 0 160px;
+}
+
+.worn li button {
+  width: 100%;
+  height: 52px;
+  padding: 0 10px 2px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--box-header);
+  box-shadow: inset 0 -2px 0 #c1d7e6;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.15;
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.worn li button:hover {
+  background: #fff;
+}
+
+/* ---------- barras de rolagem no estilo do layout ---------- */
+.scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #c1d7e6 transparent;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #c1d7e6;
+}
+
+/* ---------- responsivo ---------- */
+@media (max-width: 760px) {
+  .imager {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'preview'
+      'editor'
+      'worn';
+  }
+
+  .preview {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 16px;
+  }
+
+  .stage,
+  .arrows {
+    grid-column: 1;
+  }
+
+  .options {
+    grid-column: 2;
+  }
+
+  .stage {
+    grid-row: 1 / span 2;
+  }
+
+  .arrows {
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .tab {
+    height: 44px;
+    padding: 0 8px 3px;
+  }
+
+  .subrow {
+    gap: 8px;
+  }
+
+  .parts {
+    gap: 8px;
+  }
+
+  .preview {
+    grid-template-columns: 1fr;
+  }
+
+  .options {
+    grid-column: 1;
+  }
+
+  .worn {
+    padding-left: 12px;
+  }
+
+  .wornIcon {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

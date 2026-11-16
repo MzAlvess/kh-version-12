@@ -83,6 +83,30 @@ Para abrir um modal de qualquer componente: `const { openModal } = useModal(); o
 **Criar um novo modal:** crie o arquivo em `src/modals/forms/` usando `<FormModal>` e os campos de `src/components/Form` (`Field`, `Input`, `Select`, `Textarea`, `ImageUpload`, `Switch`, `ChoiceList`, `FormRow`, `Notice`). Depois registre o nome em `types.ts` e no `registry` do `ModalProvider.tsx`.
 A validação usa os atributos nativos (`required`, `maxLength`, `pattern`, `min`...) e mostra as mensagens no padrão do site.
 
+## Caixas com dados do Habbo (sem backend)
+
+Três caixas buscam dados direto do navegador. As chamadas ficam em `src/services/habbo.ts`.
+
+| Caixa | Fonte | O que faz |
+|---|---|---|
+| **Novos emblemas** (`src/features/NewBadges`) | [HabboAssets](https://www.habboassets.com) (comunitário) | Lista os emblemas mais recentes do hotel BR, 6 por página (setas). Tag NEW para os lançados há até 7 dias. O clique mostra o detalhe. |
+| **Encontrar habbo** (`src/features/FindHabbo`) | API pública oficial do Habbo | Busca por nick e mostra emblemas, avatar, online/offline, conta criada, último login, amigos e grupos. As setas navegam pelo histórico de buscas. |
+| **Habbo imager** (`src/features/HabboImager`) | habbo-imaging oficial + `public/data/figure.json` | Monta o visual: abas, gênero, peças, cores, girar, tamanho. A busca carrega o visual de um nick. O refresh volta ao visual carregado e as setas trocam de aba. |
+
+**Pontos de atenção:**
+- O HabboAssets não é oficial: se ficar fora do ar, a caixa mostra "Tentar novamente".
+- A API do Habbo não tem documentação oficial e pode mudar.
+- A busca é no hotel BR (`HABBO_HOTEL` em `services/habbo.ts`).
+- Perfis privados mostram só nome, avatar, datas e emblemas em destaque.
+
+### Atualizar o catálogo de roupas do imager
+O navegador não consegue ler o catálogo do Habbo direto, então ele fica salvo em `public/data/figure.json`. Para atualizar quando o Habbo lançar roupas novas:
+
+1. Abra no navegador e salve com Ctrl+S na pasta `habbo-data/` (ela fica fora do git):
+   - https://www.habbo.com.br/gamedata/figuredata/1 → `habbo-data/figuredata.xml`
+   - https://www.habbo.com.br/gamedata/furnidata_json/1 → `habbo-data/furnidata.json`
+2. Rode `npm run sync:habbo`.
+
 ## Fidelidade ao layout
 Medidas e cores foram tiradas pixel a pixel de `public/assets/_mockup-referencia.png` (1920px, container 1200px). Os valores ficam em `src/styles/tokens.css`.
 

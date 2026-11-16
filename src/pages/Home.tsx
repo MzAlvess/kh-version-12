@@ -1,4 +1,7 @@
 import { Box } from '../components/Box/Box'
+import { FindHabboBox } from '../features/FindHabbo/FindHabboBox'
+import { HabboImagerBox } from '../features/HabboImager/HabboImagerBox'
+import { NewBadgesBox } from '../features/NewBadges/NewBadgesBox'
 import { useModal } from '../modals/modalContext'
 import styles from './Home.module.css'
 
@@ -8,7 +11,7 @@ import styles from './Home.module.css'
  *   <Box title="Eventos" ...><EventosDoPainel /></Box>
  * As alturas mínimas reproduzem o tamanho de cada caixa no layout.
  */
-export function Home() {
+export function Home({ userNick }: { userNick: string }) {
   const { openModal } = useModal()
 
   return (
@@ -32,33 +35,13 @@ export function Home() {
           minBodyHeight={446}
         />
 
-        <Box
-          id="novos-emblemas"
-          title="Novos emblemas"
-          accent="pink"
-          sideStrip={{ color: 'pink', icon: <img src="/assets/strip-emblemas.png" alt="" width={31} height={32} /> }}
-          minBodyHeight={110}
-        />
-
-        <Box
-          id="habbo-imager"
-          title="Habbo imager"
-          accent="teal"
-          sideStrip={{ color: 'teal', icon: <img src="/assets/strip-imager.png" alt="" width={32} height={39} /> }}
-          search={{ placeholder: 'Pesquisar habbo...' }}
-          minBodyHeight={515}
-        />
+        {/* dados direto das APIs públicas do Habbo / HabboAssets (ver src/services/habbo.ts) */}
+        <NewBadgesBox />
+        <HabboImagerBox initialNick={userNick} />
       </div>
 
       <aside className={styles.side}>
-        <Box
-          id="encontrar-habbo"
-          variant="dark"
-          title="Encontrar habbo"
-          accent="pink"
-          search={{ placeholder: 'Encontrar...' }}
-          minBodyHeight={359}
-        />
+        <FindHabboBox initialNick={userNick} />
 
         <Box id="eventos-oficiais" variant="dark" title="Eventos oficiais" accent="orange" minBodyHeight={337} />
 

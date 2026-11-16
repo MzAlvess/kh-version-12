@@ -5,7 +5,7 @@ interface IsoTileProps {
   width: number
   /** espessura da lateral (px) */
   thickness: number
-  tone?: 'light' | 'dark'
+  tone?: 'light' | 'dark' | 'gray'
   className?: string
   style?: CSSProperties
 }
@@ -13,6 +13,7 @@ interface IsoTileProps {
 const tones = {
   light: { top: 'var(--tile-top)', left: 'var(--tile-left)', right: 'var(--tile-right)' },
   dark: { top: '#46717f', left: '#3c6472', right: '#345a67' },
+  gray: { top: '#6b6f74', left: '#55595e', right: '#44474b' },
 }
 
 /** Piso isométrico (mesma geometria do layout: altura do losango = 45% da largura). */
