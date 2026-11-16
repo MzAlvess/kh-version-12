@@ -1,5 +1,6 @@
 import { type CSSProperties, type ReactNode } from 'react'
 import { Box } from '../../components/Box/Box'
+import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary'
 import { Icon } from '../../components/Icon/Icon'
 import { IsoTile } from '../../components/IsoTile/IsoTile'
 import { useRadioPlayer } from '../../hooks/useRadioPlayer'
@@ -149,7 +150,9 @@ export function RadioPanel({
 
         {/* ---------- slots ---------- */}
         <div className={styles.grid}>
-          <div className={styles.banner}>{banner ?? <div className={styles.bannerSlot}>Banner / destaque</div>}</div>
+          <div className={styles.banner}>
+            <ErrorBoundary>{banner ?? <div className={styles.bannerSlot}>Banner / destaque</div>}</ErrorBoundary>
+          </div>
 
           <span className={styles.divider} aria-hidden="true" />
 

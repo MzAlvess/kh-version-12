@@ -7,7 +7,9 @@ export function NewsCard({ post }: { post: Post }) {
     <Link to={`/noticias/${post.slug}`} className={styles.newsCard}>
       <span className={styles.newsCover}>
         {post.coverImage ? <img src={post.coverImage} alt="" loading="lazy" /> : <span className={styles.newsNoCover} />}
-        <span className={styles.tag}>#{post.tags[0] ?? 'Kihabbo'}</span>
+        <span className={styles.tag} style={post.tags[0]?.color ? { background: post.tags[0].color } : undefined}>
+          #{post.tags[0]?.name ?? 'Kihabbo'}
+        </span>
       </span>
       <span className={styles.newsBody}>
         <strong>{post.title}</strong>

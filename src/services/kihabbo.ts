@@ -174,7 +174,7 @@ export interface Post {
   likesCount: number
   /** o usuário logado já curtiu */
   liked?: boolean
-  tags: string[]
+  tags: NewsTag[]
 }
 
 export interface PostPage {
@@ -184,8 +184,38 @@ export interface PostPage {
   total: number
 }
 
+export interface NewsTag {
+  id: string
+  slug: string
+  name: string
+  /** cor da tag (hex), quando a equipe definir */
+  color: string | null
+}
+
+/** a API já mandou tags como texto e hoje manda como objeto: aceita os dois */
+function normalizeTags(raw: unknown): NewsTag[] {
+  if (!Array.isArray(raw)) return []
+  return raw
+    .map((t): NewsTag | null => {
+      if (typeof t === 'string') return { id: t, slug: t, name: t, color: null }
+      if (t && typeof t === 'object') {
+        const o = t as Record<string, unknown>
+        const name = String(o.name ?? o.slug ?? o.id ?? '')
+        if (!name) return null
+        return { id: String(o.id ?? name), slug: String(o.slug ?? name), name, color: typeof o.color === 'string' && o.color ? o.color : null }
+      }
+      return null
+    })
+    .filter((t): t is NewsTag => !!t)
+}
+
+const normalizePost = (p: Post): Post => ({ ...p, tags: normalizeTags(p.tags) })
+
 export const getPosts = ({ page = 1, limit = 6 }, signal?: AbortSignal) =>
-  get<PostPage>(`/news/posts?page=${page}&limit=${limit}`, signal)
+  get<PostPage>(`/news/posts?page=${page}&limit=${limit}`, signal).then((d) => ({
+    ...d,
+    posts: d.posts.map(normalizePost),
+  }))
 
 /** A API aceita no máximo 50 por página (acima disso ela volta para o padrão de 6). */
 export const MAX_PAGE_SIZE = 50
@@ -202,7 +232,7 @@ export async function getAllPosts(signal?: AbortSignal): Promise<Post[]> {
 }
 
 export const getPost = (slug: string, signal?: AbortSignal) =>
-  get<Post>(`/news/posts/${encodeURIComponent(slug)}`, signal)
+  get<Post>(`/news/posts/${encodeURIComponent(slug)}`, signal).then(normalizePost)
 
 export interface Comment {
   id: string

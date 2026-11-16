@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
+import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary'
 import { Icon } from '../Icon/Icon'
 import styles from './Box.module.css'
 
@@ -180,7 +181,7 @@ export function Box({
         {searchBelow && searchForm && <div className={styles.searchRow}>{searchForm}</div>}
 
         <div className={styles.body} style={{ '--min-body': `${minBodyHeight}px` } as CSSProperties}>
-          {children ?? (showSlot && <div className={styles.slot}>Slot do painel</div>)}
+          <ErrorBoundary>{children ?? (showSlot && <div className={styles.slot}>Slot do painel</div>)}</ErrorBoundary>
         </div>
 
         {footer && <div className={styles.footer}>{footer}</div>}
