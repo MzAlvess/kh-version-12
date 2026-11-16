@@ -19,6 +19,16 @@
   --teal-border: #3d6774;
   --teal-shadow: #2f525e;
 
+  /* Variações de borda/sombra para as cores do hub (usadas nos modais) */
+  --yellow-border: #e0952a;
+  --yellow-shadow: #c07a17;
+  --red-border: #c9252d;
+  --red-shadow: #a51e25;
+  --purple-border: #7a58b0;
+  --purple-shadow: #614690;
+  --cyan-border: #00a3cf;
+  --cyan-shadow: #0085a9;
+
   /* Botões do hub do usuário */
   --hub-yellow: #ffad31;
   --hub-orange: #ff7133;

@@ -43,6 +43,46 @@ Sem `children` o box mostra um slot tracejado “Slot do painel”. Use `hideRef
 
 `RadioPanel` aceita `banner`, `topEventos` e `habboStars` como ReactNode.
 
+## Modais e formulários
+
+Os botões abrem modais no mesmo padrão visual das caixas:
+
+| Botão | Modal (`ModalName`) | Arquivo |
+|---|---|---|
+| Notificar evento | `notificar-evento` | `src/modals/forms/NotificarEvento.tsx` |
+| Postar artigo | `postar-artigo` | `src/modals/forms/PostarArtigo.tsx` |
+| Votar na enquete (Habbo Stars) | `votar-enquete` | `src/modals/forms/VotarEnquete.tsx` |
+| Gerar fichas | `gerar-fichas` | `src/modals/forms/GerarFichas.tsx` |
+| Abrir ticket | `abrir-ticket` | `src/modals/forms/AbrirTicket.tsx` |
+| Sair | `sair` | `src/modals/forms/Sair.tsx` |
+| Enquetes | `enquetes` | `src/modals/forms/Enquetes.tsx` |
+| Config. | `config` | `src/modals/forms/Config.tsx` |
+| Habbo | `habbo` | `src/modals/forms/Habbo.tsx` |
+
+Gerar fichas, Enquetes, Config. e Habbo têm campos genéricos. Ajustem quando as regras estiverem definidas.
+
+**Ligando ao backend:** em `src/App.tsx`, preencha `handlers`. Cada função recebe os valores do formulário (os arquivos vêm como `File`):
+
+```ts
+const handlers: ModalHandlers = {
+  'postar-artigo': async (values) => {
+    const body = new FormData()
+    Object.entries(values).forEach(([k, v]) => body.append(k, v as string | Blob))
+    const res = await fetch('/api/artigos', { method: 'POST', body })
+    if (!res.ok) throw new Error('Não foi possível publicar o artigo.') // aparece no modal
+  },
+  sair: () => { window.location.href = '/logout' },
+}
+```
+
+Enquanto um modal não tiver handler, o envio é simulado e os dados aparecem no console.
+As enquetes vêm da prop `polls` do `ModalProvider` (exemplo em `src/modals/sampleData.ts`).
+
+Para abrir um modal de qualquer componente: `const { openModal } = useModal(); openModal('abrir-ticket')`.
+
+**Criar um novo modal:** crie o arquivo em `src/modals/forms/` usando `<FormModal>` e os campos de `src/components/Form` (`Field`, `Input`, `Select`, `Textarea`, `ImageUpload`, `Switch`, `ChoiceList`, `FormRow`, `Notice`). Depois registre o nome em `types.ts` e no `registry` do `ModalProvider.tsx`.
+A validação usa os atributos nativos (`required`, `maxLength`, `pattern`, `min`...) e mostra as mensagens no padrão do site.
+
 ## Fidelidade ao layout
 Medidas e cores foram tiradas pixel a pixel de `public/assets/_mockup-referencia.png` (1920px, container 1200px). Os valores ficam em `src/styles/tokens.css`.
 

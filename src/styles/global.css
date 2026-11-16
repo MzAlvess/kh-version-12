@@ -32,7 +32,9 @@ img {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
   color: inherit;
 }
@@ -61,3 +63,13 @@ a {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* Tons de cor reutilizáveis (botões, modais, formulários): definem --c, --cb (borda) e --cs (sombra) */
+.tone-green { --c: var(--green); --cb: var(--green-border); --cs: var(--green-shadow); }
+.tone-pink { --c: var(--pink); --cb: var(--pink-border); --cs: var(--pink-shadow); }
+.tone-orange { --c: var(--orange); --cb: var(--orange-border); --cs: var(--orange-shadow); }
+.tone-teal { --c: var(--teal); --cb: var(--teal-border); --cs: var(--teal-shadow); }
+.tone-yellow { --c: var(--hub-yellow); --cb: var(--yellow-border); --cs: var(--yellow-shadow); }
+.tone-red { --c: var(--hub-red); --cb: var(--red-border); --cs: var(--red-shadow); }
+.tone-purple { --c: var(--hub-purple); --cb: var(--purple-border); --cs: var(--purple-shadow); }
+.tone-cyan { --c: var(--hub-cyan); --cb: var(--cyan-border); --cs: var(--cyan-shadow); }

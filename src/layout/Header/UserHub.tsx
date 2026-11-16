@@ -1,16 +1,29 @@
 import { IsoTile } from '../../components/IsoTile/IsoTile'
+import { useModal } from '../../modals/modalContext'
 import { habboAvatar, userLinksLeft, userLinksRight, type UserLink } from './menu'
 import type { HeaderUser } from './Header'
 import styles from './UserHub.module.css'
 
 function LinkGroup({ links, side }: { links: UserLink[]; side: 'left' | 'right' }) {
+  const { openModal } = useModal()
   return (
     <ul className={`${styles.panel} ${styles[side]}`}>
       {links.map((l) => (
         <li key={l.id}>
-          <a href={l.href} onClick={l.onClick} className={`${styles.link} ${styles[l.color]}`}>
-            {l.label}
-          </a>
+          {l.modal ? (
+            <button
+              type="button"
+              className={`${styles.link} ${styles[l.color]}`}
+              onClick={() => openModal(l.modal!)}
+              aria-haspopup="dialog"
+            >
+              {l.label}
+            </button>
+          ) : (
+            <a href={l.href} onClick={l.onClick} className={`${styles.link} ${styles[l.color]}`}>
+              {l.label}
+            </a>
+          )}
         </li>
       ))}
     </ul>

@@ -126,6 +126,9 @@
 
 .link {
   display: grid;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
   place-items: center;
   width: 97px;
   height: 36px;

@@ -1,3 +1,5 @@
+import type { ModalName } from '../../modals/types'
+
 export interface MenuItem {
   id: string
   label: string
@@ -22,19 +24,21 @@ export interface UserLink {
   label: string
   href?: string
   onClick?: () => void
+  /** abre este modal em vez de navegar */
+  modal?: ModalName
   color: 'yellow' | 'orange' | 'red' | 'purple' | 'cyan' | 'green'
 }
 
 export const userLinksLeft: UserLink[] = [
-  { id: 'gerar-fichas', label: 'Gerar fichas', href: '/fichas', color: 'yellow' },
-  { id: 'ticket', label: 'Abrir ticket', href: '/ticket', color: 'orange' },
-  { id: 'sair', label: 'Sair', href: '/logout', color: 'red' },
+  { id: 'gerar-fichas', label: 'Gerar fichas', modal: 'gerar-fichas', color: 'yellow' },
+  { id: 'ticket', label: 'Abrir ticket', modal: 'abrir-ticket', color: 'orange' },
+  { id: 'sair', label: 'Sair', modal: 'sair', color: 'red' },
 ]
 
 export const userLinksRight: UserLink[] = [
-  { id: 'enquetes', label: 'Enquetes', href: '/enquetes', color: 'purple' },
-  { id: 'config', label: 'Config.', href: '/config', color: 'cyan' },
-  { id: 'habbo', label: 'Habbo', href: '/habbo', color: 'green' },
+  { id: 'enquetes', label: 'Enquetes', modal: 'enquetes', color: 'purple' },
+  { id: 'config', label: 'Config.', modal: 'config', color: 'cyan' },
+  { id: 'habbo', label: 'Habbo', modal: 'habbo', color: 'green' },
 ]
 
 export const habboAvatar = (nick: string, size: 's' | 'm' | 'l' = 'm') =>

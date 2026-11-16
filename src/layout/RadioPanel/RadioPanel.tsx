@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import { Box } from '../../components/Box/Box'
 import { Icon } from '../../components/Icon/Icon'
 import { IsoTile } from '../../components/IsoTile/IsoTile'
+import { useModal } from '../../modals/modalContext'
 import { habboAvatar } from '../Header/menu'
 import styles from './RadioPanel.module.css'
 
@@ -35,6 +36,7 @@ export function RadioPanel({
   habboStars,
   onVotarEnquete,
 }: RadioPanelProps) {
+  const { openModal } = useModal()
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
   const [volume, setVolume] = useState(78)
@@ -146,7 +148,7 @@ export function RadioPanel({
             title="Habbo Stars"
             hideRefresh
             hideNav
-            primaryAction={{ label: 'Votar na enquete', color: 'orange', onClick: onVotarEnquete }}
+            primaryAction={{ label: 'Votar na enquete', color: 'orange', onClick: onVotarEnquete ?? (() => openModal('votar-enquete')) }}
             minBodyHeight={176}
           >
             {habboStars}

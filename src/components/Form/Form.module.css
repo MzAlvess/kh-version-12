@@ -1,0 +1,382 @@
+/* Campos no mesmo padrão da busca das caixas: borda #d0d7de, fundo #fafcff, raio 6px.
+   A cor de foco vem do tom do modal (--c). */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* ---------- campo ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.required {
+  color: var(--pink);
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--hub-red);
+}
+
+.control {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--nav-border);
+  border-radius: 6px;
+  background: var(--input-bg);
+  box-shadow: inset 0 2px 0 rgba(208, 215, 222, 0.35);
+  color: var(--text-strong);
+  font-size: 15px;
+  outline: 0;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.control::placeholder {
+  color: #9aa3ab;
+}
+
+.control:focus {
+  border-color: var(--cb, var(--green-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c, var(--green)) 22%, transparent);
+}
+
+.invalid .control,
+.invalid .upload {
+  border-color: var(--hub-red);
+  background: #fff8f8;
+}
+
+/* select com seta própria */
+.select {
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'%3E%3Cpath fill='%23121212' d='M7.4 8.6 6 10l6 6 6-6-1.4-1.4-4.6 4.6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+}
+
+/* textarea + contador */
+.textareaWrap {
+  position: relative;
+  display: block;
+}
+
+.textarea {
+  display: block;
+  height: auto;
+  min-height: 96px;
+  padding: 10px 12px 22px;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.counter {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* ---------- switch ---------- */
+.switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border: 1px solid #f1f2f2;
+  border-radius: 8px;
+  background: #feffff;
+  box-shadow: inset 0 -2px 0 #e4f2fb;
+  cursor: pointer;
+}
+
+.switchText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.switchLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.switchInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.track {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: #cfd8e0;
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.08);
+  transition: background 0.15s;
+}
+
+.track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s;
+}
+
+.switchInput:checked + .track {
+  background: var(--green);
+}
+
+.switchInput:checked + .track::after {
+  transform: translateX(20px);
+}
+
+.switchInput:focus-visible + .track {
+  outline: 3px solid color-mix(in srgb, var(--green) 35%, transparent);
+  outline-offset: 2px;
+}
+
+/* ---------- upload de imagem ---------- */
+.upload {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 120px;
+  border: 2px dashed var(--nav-border);
+  border-radius: 8px;
+  background: var(--box-header);
+  overflow: hidden;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.upload:hover,
+.upload:focus-within {
+  border-color: var(--cb, var(--green-border));
+  background: #edf3fa;
+}
+
+.hasPreview {
+  border-style: solid;
+}
+
+.uploadHint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.uploadHint svg {
+  color: var(--c, var(--green));
+}
+
+.uploadHint strong {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid var(--red-border);
+  background: var(--hub-red);
+  box-shadow: inset 0 -2px 0 var(--red-shadow);
+  color: #fff;
+}
+
+/* ---------- opções (cards) ---------- */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  border: 1px solid #f1f2f2;
+  border-radius: 8px;
+  background: #feffff;
+  box-shadow: inset 0 -2px 0 #e4f2fb;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.choice:hover {
+  border-color: var(--nav-border);
+}
+
+.choice:has(.choiceInput:checked) {
+  border-color: var(--cb, var(--green-border));
+  background: color-mix(in srgb, var(--c, var(--green)) 8%, #fff);
+}
+
+.choice:has(.choiceInput:focus-visible) {
+  outline: 3px solid color-mix(in srgb, var(--c, var(--green)) 30%, transparent);
+  outline-offset: 2px;
+}
+
+.choiceInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.choiceImage {
+  flex: 0 0 56px;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  border-right: 1px solid #f1f2f2;
+  overflow: hidden;
+}
+
+.choiceImage img {
+  max-width: none;
+}
+
+.choiceText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 14px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.choiceText strong {
+  font-weight: 600;
+}
+
+.choiceText span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.choiceCheck {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-right: 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--nav-border);
+  color: transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.choice:has(.choiceInput:checked) .choiceCheck {
+  background: var(--c, var(--green));
+  border-color: var(--cb, var(--green-border));
+  color: #fff;
+}
+
+/* ---------- aviso ---------- */
+.notice {
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--box-header);
+  border: 1px solid #dfe8f3;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.notice > svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--teal);
+}
+
+.noticeError {
+  background: #fff3f3;
+  border-color: #f5c6c8;
+}
+
+.noticeError > svg {
+  color: var(--hub-red);
+}
+
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

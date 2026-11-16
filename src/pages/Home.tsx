@@ -1,4 +1,5 @@
 import { Box } from '../components/Box/Box'
+import { useModal } from '../modals/modalContext'
 import styles from './Home.module.css'
 
 /**
@@ -8,6 +9,8 @@ import styles from './Home.module.css'
  * As alturas mínimas reproduzem o tamanho de cada caixa no layout.
  */
 export function Home() {
+  const { openModal } = useModal()
+
   return (
     <main className={`container ${styles.grid}`}>
       <div className={styles.main}>
@@ -15,7 +18,7 @@ export function Home() {
           id="eventos"
           title="Eventos"
           accent="green"
-          primaryAction={{ label: 'Notificar evento' }}
+          primaryAction={{ label: 'Notificar evento', onClick: () => openModal('notificar-evento') }}
           search={{ placeholder: 'Pesquisar...' }}
           minBodyHeight={232}
         />
@@ -24,7 +27,7 @@ export function Home() {
           id="voz-da-comunidade"
           title="Voz da comunidade"
           accent="green"
-          primaryAction={{ label: 'Postar artigo' }}
+          primaryAction={{ label: 'Postar artigo', onClick: () => openModal('postar-artigo') }}
           search={{ placeholder: 'Pesquisar...' }}
           minBodyHeight={446}
         />

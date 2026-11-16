@@ -1,0 +1,144 @@
+.text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.question {
+  margin: 0 0 2px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.muted {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* saldo de fichas */
+.balance {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #fff8d6;
+  border: 1px solid #f5d76e;
+  color: #8a6400;
+  font-size: 14px;
+}
+
+.balance strong {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.coin {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid #906c14;
+  background: radial-gradient(circle, #ffca3a 0 11px, #ffb700 12px);
+  box-shadow: inset 0 -3px 0 #e58719;
+  color: #fb8c00;
+  font-weight: 700;
+}
+
+/* código de verificação do Habbo */
+.code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 10px 10px 16px;
+  border-radius: 8px;
+  border: 2px dashed var(--cb);
+  background: color-mix(in srgb, var(--c) 8%, #fff);
+}
+
+.code strong {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: var(--text-strong);
+}
+
+.copy {
+  height: 34px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+/* lista de enquetes */
+.polls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pollCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 14px 14px 16px;
+  border: 1px solid #f1f2f2;
+  border-radius: 8px;
+  background: #feffff;
+  box-shadow: inset 0 -2px 0 #e4f2fb;
+  text-align: left;
+  transition: border-color 0.15s;
+}
+
+.pollCard:hover,
+.pollCard:focus-visible {
+  border-color: var(--cb);
+  outline: 0;
+}
+
+.pollCard > span:first-child {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pollCard strong {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pollCard small {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.pollCard svg {
+  flex-shrink: 0;
+  color: var(--c);
+}
+
+.back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
