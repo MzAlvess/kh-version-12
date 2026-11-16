@@ -105,7 +105,12 @@ A coluna lateral das páginas internas (`features/Sidebar`) mostra Encontrar hab
 - **No `npm run dev` / `preview`:** o Vite repassa `/v1` para a API real (`vite.config.ts`).
 - **Outro servidor:** defina `VITE_KIHABBO_API` no `.env`.
 
-**Deploy (SPA):** configure o servidor para responder `index.html` em qualquer rota que não seja arquivo nem `/v1` (ex.: `try_files $uri /index.html;` no nginx). Sem isso, abrir `/noticias` direto dá 404.
+**Deploy:**
+- **Vercel:** o `vercel.json` já faz as duas coisas necessárias. Ele repassa `/v1/*` para `https://www.kihabbo.com.br/v1/*`, o mesmo papel do proxy do Vite, e responde `index.html` nas rotas do app (`/noticias`, `/radio`…).
+- **Outro servidor (ex.: nginx):**
+  - faça proxy de `/v1` para a API;
+  - use `try_files $uri /index.html;` para as rotas.
+- **Sem isso:** a API e as páginas internas abertas direto dão 404.
 
 **Formulários das páginas:** "Faça parte da equipe" e "Contato" usam os `handlers` de `App.tsx` com as chaves `'faca-parte'` e `'contato'`. Sem handler, o envio é simulado. A API atual tem `/v1/support/tickets`, mas ela exige login.
 
