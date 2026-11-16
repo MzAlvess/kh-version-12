@@ -1,0 +1,213 @@
+/* painel interno igual ao das outras caixas escuras (#355864) */
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 8px;
+  background: #355864;
+}
+
+.empty {
+  margin: auto;
+  padding: 16px 8px;
+  color: #c4d5dc;
+  font-size: 13px;
+  text-align: center;
+}
+
+.footerBtn {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--dark-btn-border);
+  background: var(--dark-btn);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.footerBtn:hover {
+  filter: brightness(1.1);
+}
+
+/* ---------- cards (como os do "Eventos oficiais" do layout) ---------- */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: #304f5a;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.card:hover,
+.card:focus-visible {
+  background: #3a5f6c;
+  outline: 0;
+}
+
+.thumb {
+  flex: 0 0 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #2a4650;
+  overflow: hidden;
+  color: #ffc93a;
+  font-size: 20px;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info strong {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.info small {
+  font-size: 11px;
+  color: #ffd56b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- horários BR / PT ---------- */
+.times {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.timeRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.flag {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 13px;
+}
+
+/* ---------- modal ---------- */
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--text-strong);
+}
+
+.modal .timeRow {
+  font-size: 14px;
+  opacity: 1;
+  font-weight: 500;
+}
+
+.modalBanner {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.modalTitle {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.modalMeta {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.modalMeta strong {
+  color: var(--orange);
+}
+
+.modalText {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.room {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.command {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 6px 0 12px;
+  border: 1px dashed var(--orange-border);
+  border-radius: 6px;
+  background: #fff5ef;
+}
+
+.command code {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.command button {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--nav-border);
+  border-radius: 5px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}

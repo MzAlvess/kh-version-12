@@ -100,6 +100,17 @@ O painel da rádio fica montado ao trocar de página, então a rádio continua t
 
 A coluna lateral das páginas internas (`features/Sidebar`) mostra Encontrar habbo, Top locutores (`/v1/rankings`) e Agenda (`/v1/agenda/events`).
 
+**Home: caixas ligadas à API do Kihabbo**
+
+| Caixa | Rota | Como funciona |
+|---|---|---|
+| Banner do painel da rádio (`features/Destaques`) | `/v1/destaques` | Gira no intervalo da API (`rotationSeconds`) e pausa com o mouse em cima. |
+| Notícias (`features/News`) | `/v1/news/posts` | 6 por página. |
+| Eventos oficiais (`features/Agenda`) | `/v1/agenda/events` | Mostra só os próximos eventos. O modal tem horário Brasil/Portugal, local, prêmio, descrição, "Visitar quarto" e `:roomid`. |
+| Atacadão (`features/Market`) | `/v1/market/status`, `/v1/market/listings` | Fechado → "Mercado fechado" com o motivo. Aberto → anúncios. "Comprar" e "Ver todos" levam ao mercado do site atual, porque a compra exige login. |
+
+O mercado está fechado e sem anúncios, então o formato de um anúncio não pôde ser confirmado. A normalização em `services/kihabbo.ts` aceita os nomes mais prováveis (`name`/`title`, `imageUrl`/`iconUrl`, `price`/`priceCoins`…). Quando o mercado abrir, vale conferir.
+
 **API do Kihabbo:** as páginas usam a mesma API pública do site atual (`kihabbo.com.br/v1`), em `src/services/kihabbo.ts`. Ela só aceita CORS do próprio domínio:
 - **Em produção:** o site precisa ficar em `kihabbo.com.br`, no mesmo domínio da API.
 - **No `npm run dev` / `preview`:** o Vite repassa `/v1` para a API real (`vite.config.ts`).

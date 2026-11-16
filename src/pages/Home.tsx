@@ -1,10 +1,12 @@
 import { Box } from '../components/Box/Box'
 import { PageGrid } from '../components/PageGrid/PageGrid'
+import { EventsBox } from '../features/Agenda/EventsBox'
 import { FindHabboBox } from '../features/FindHabbo/FindHabboBox'
+import { AtacadaoBox } from '../features/Market/AtacadaoBox'
 import { HabboImagerBox } from '../features/HabboImager/HabboImagerBox'
+import { LatestNewsBox } from '../features/News/LatestNewsBox'
 import { NewBadgesBox } from '../features/NewBadges/NewBadgesBox'
 import { useModal } from '../modals/modalContext'
-import styles from './Home.module.css'
 
 /**
  * Home do layout (coluna 860px + lateral 310px).
@@ -20,20 +22,9 @@ export function Home({ userNick }: { userNick: string }) {
         <>
           <FindHabboBox initialNick={userNick} />
 
-          <Box id="eventos-oficiais" variant="dark" title="Eventos oficiais" accent="orange" minBodyHeight={337} />
+          <EventsBox id="eventos-oficiais" title="Eventos oficiais" accent="orange" minBodyHeight={200} />
 
-          <Box
-            id="atacadao"
-            variant="dark"
-            title="Atacadão"
-            accent="green"
-            minBodyHeight={472}
-            footer={
-              <a href="/atacadao" className={styles.verTodos}>
-                Ver todos
-              </a>
-            }
-          />
+          <AtacadaoBox />
         </>
       }
     >
@@ -45,6 +36,9 @@ export function Home({ userNick }: { userNick: string }) {
         search={{ placeholder: 'Pesquisar...' }}
         minBodyHeight={232}
       />
+
+      {/* últimas notícias da equipe (API do Kihabbo) */}
+      <LatestNewsBox />
 
       <Box
         id="voz-da-comunidade"
