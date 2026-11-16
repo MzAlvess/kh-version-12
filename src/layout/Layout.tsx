@@ -9,6 +9,7 @@ import { HabboStars } from '../features/HabboStars/HabboStars'
 import { TopEventosBox } from '../features/News/TopEventosBox'
 import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary'
 import { Footer } from './Footer/Footer'
+import { RouteTransition } from './RouteTransition'
 import { Header, type HeaderUser } from './Header/Header'
 import { DEFAULT_STREAM_URL, RadioPanel } from './RadioPanel/RadioPanel'
 
@@ -56,7 +57,9 @@ export function Layout({ user, authLoading }: { user: HeaderUser | null; authLoa
         />
       </ErrorBoundary>
       <ErrorBoundary resetKey={pathname} message="Não foi possível exibir esta página agora.">
-        <Outlet />
+        <RouteTransition hold={authLoading}>
+          <Outlet />
+        </RouteTransition>
       </ErrorBoundary>
       <Footer />
     </>

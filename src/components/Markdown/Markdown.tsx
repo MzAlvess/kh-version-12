@@ -24,6 +24,10 @@ function imageParts(raw: string): { src?: string; align?: Align } {
 
 /* ============================== inline ============================== */
 
+const ENTITIES: Record<string, string> = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", '#39': "'" }
+/** &nbsp; &amp; &lt; ... viram texto (o editor do Kihabbo às vezes salva entidades) */
+const decodeEntities = (text: string) => text.replace(/&(nbsp|amp|lt|gt|quot|apos|#39);/g, (_, e: string) => ENTITIES[e])
+
 function inline(text: string, keyPrefix = ''): ReactNode[] {
   const out: ReactNode[] = []
   // ordem importa: escape, imagem, link, ***, **, ++, *, _
@@ -62,7 +66,7 @@ function inline(text: string, keyPrefix = ''): ReactNode[] {
     last = re.lastIndex
   }
   if (last < text.length) out.push(text.slice(last))
-  return out
+  return out.map((n) => (typeof n === 'string' ? decodeEntities(n) : n))
 }
 
 /* ============================== blocos ============================== */
@@ -106,12 +110,23 @@ function blocks(source: string, keyPrefix = ''): ReactNode[] {
       continue
     }
 
+    // linha só com &nbsp;: espaço extra entre blocos
+    if (/^(&nbsp;s*)+$/.test(trimmed)) {
+      out.push(<div key={key()} className={styles.spacer} aria-hidden="true" />)
+      i++
+      continue
+    }
+
     // título
     const heading = /^(#{1,4})\s+(.*)$/.exec(trimmed)
     if (heading) {
       const level = Math.min(heading[1].length + 1, 4) // # → h2 (o h1 é o título da notícia)
-      const content = inline(heading[2].replace(/\s+#+$/, ''), `${keyPrefix}h${k}-`)
-      const cls = alignClass(pendingAlign)
+      // "## {.center} Título" → título centralizado
+      let headingText = heading[2].replace(/\s+#+$/, '')
+      const headingAlign = ALIGN_RE.exec(headingText)?.[1] as Align | undefined
+      if (headingAlign) headingText = headingText.replace(ALIGN_RE, '')
+      const content = inline(headingText, `${keyPrefix}h${k}-`)
+      const cls = alignClass(headingAlign ?? pendingAlign)
       out.push(
         level === 2 ? (
           <h2 key={key()} className={cls}>{content}</h2>

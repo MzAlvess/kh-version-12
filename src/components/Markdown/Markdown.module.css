@@ -144,3 +144,8 @@
 .callout_tip .calloutTitle::before { content: '💡'; }
 
 .callout_info .calloutTitle::before { content: 'ℹ'; }
+
+/* linha só com &nbsp; no editor */
+.spacer {
+  height: 4px;
+}

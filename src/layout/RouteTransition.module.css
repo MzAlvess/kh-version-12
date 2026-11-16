@@ -1,0 +1,79 @@
+.stage {
+  position: relative;
+}
+
+/* página nova entra com fade (logo depois de o véu começar a sumir) */
+.page {
+  animation: pageIn 0.45s ease-out 0.3s both;
+}
+
+/* véu sobre a área do conteúdo, na cor da página, com o cubo pulsando */
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  background: var(--page-bg);
+  pointer-events: none;
+  animation: veilOut 0.35s ease-in 0.4s forwards;
+}
+
+.cube {
+  position: sticky;
+  top: 38vh;
+  margin-top: 90px;
+  width: 80px; /* 2x exato: pixel art sem borrar */
+  height: 84px;
+  max-width: none;
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+/* 1ª abertura: segura o véu (e a página escondida) enquanto a sessão carrega */
+.holding {
+  animation-play-state: paused;
+  pointer-events: auto;
+}
+
+.waiting {
+  animation-play-state: paused;
+}
+
+@keyframes veilOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* "piscar lentamente": opacidade e um leve respiro */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* quem pede menos movimento: troca simples, sem véu nem animação */
+@media (prefers-reduced-motion: reduce) {
+  .veil {
+    display: none;
+  }
+
+  .page {
+    animation: none;
+  }
+}
