@@ -47,7 +47,7 @@ export function HabboImagerBox({ initialNick }: { initialNick: string }) {
   const [large, setLarge] = useState(true)
 
   const catalog = useAsync('figuredata', () => loadFigureData())
-  const looked = useAsync(`look-${nick.toLowerCase()}`, (signal) => getUser(nick, signal))
+  const looked = useAsync(nick ? `look-${nick.toLowerCase()}` : null, (signal) => getUser(nick, signal))
   const data = catalog.data
 
   // visual atual = edição do usuário OU visual do nick buscado OU padrão

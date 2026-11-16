@@ -37,7 +37,7 @@ export function UtilidadesPage({ userNick }: { userNick: string }) {
         {tab === 'emblemas' && <BuscaEmblemas />}
       </Box>
 
-      <HabboImagerBox initialNick={userNick} />
+      <HabboImagerBox key={userNick} initialNick={userNick} />
     </PageGrid>
   )
 }

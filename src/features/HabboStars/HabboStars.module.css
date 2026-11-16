@@ -1,0 +1,106 @@
+/* Layout: cabeça do avatar (52px) + card 210 x 50, linhas de 62 em 62px, a do meio espelhada */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.reverse {
+  flex-direction: row-reverse;
+}
+
+/* só a cabeça do avatar (headonly do habbo-imaging, 54 x 62), sem moldura.
+   A linha tem a altura exata da imagem (62px = espaçamento do layout), então nada vaza para a linha vizinha. */
+.avatar {
+  flex: 0 0 54px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.avatar img {
+  max-width: none;
+}
+
+.avatar.skeleton {
+  height: 52px;
+  border-radius: 50%;
+}
+
+.card {
+  flex: 1;
+  min-width: 0;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 14px 2px;
+  border: 1px solid #f1f2f2;
+  border-radius: 8px;
+  background: #feffff;
+  box-shadow: inset 0 -2px 0 #e4f2fb;
+}
+
+.reverse .card {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.card strong {
+  max-width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card small {
+  max-width: 100%;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty {
+  margin: auto;
+  padding: 24px 8px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f4f6f8 25%, #e9edf1 50%, #f4f6f8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
+.row {
+  min-height: 62px;
+}

@@ -68,7 +68,8 @@ export default function App() {
     }
   }, [auth])
 
-  const nick = auth.user?.avatarUser ?? DEFAULT_NICK
+  // enquanto a sessão carrega, as caixas esperam (nick vazio) em vez de buscar o nick padrão
+  const nick = auth.status === 'loading' ? '' : (auth.user?.avatarUser ?? DEFAULT_NICK)
 
   return (
     <BrowserRouter>

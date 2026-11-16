@@ -20,7 +20,7 @@ export function Home({ userNick }: { userNick: string }) {
     <PageGrid
       aside={
         <>
-          <FindHabboBox initialNick={userNick} />
+          <FindHabboBox key={userNick} initialNick={userNick} />
 
           <EventsBox id="eventos-oficiais" title="Eventos oficiais" accent="orange" minBodyHeight={200} />
 
@@ -51,7 +51,7 @@ export function Home({ userNick }: { userNick: string }) {
 
       {/* dados direto das APIs públicas do Habbo / HabboAssets (ver src/services/habbo.ts) */}
       <NewBadgesBox />
-      <HabboImagerBox initialNick={userNick} />
+      <HabboImagerBox key={userNick} initialNick={userNick} />
     </PageGrid>
   )
 }

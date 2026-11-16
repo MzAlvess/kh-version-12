@@ -360,6 +360,32 @@ export const getMarketListings = ({ page = 1, limit = 3 }, signal?: AbortSignal)
 /** página do mercado no site atual (compra exige login) */
 export const MARKET_URL = 'https://www.kihabbo.com.br/mercado'
 
+/* ============================== feature flags / Hall da Fama ============================== */
+
+/** chaves que o site atual liga/desliga (ex.: history_hall_of_fame, market, best_of_round) */
+export const getFeatureFlags = (signal?: AbortSignal) => get<Record<string, boolean>>('/feature-flags', signal)
+
+export interface HallCategory {
+  id: string
+  label: string
+}
+
+export interface HallWinner {
+  name: string
+  wins: number
+  lastWin: string | null
+}
+
+export const getHallCategories = (signal?: AbortSignal) =>
+  get<{ categories: HallCategory[] }>('/history/categories', signal).then((d) => d.categories)
+
+/** vencedores do "Melhores da rodada" numa categoria (a API repete nomes: deduplicamos) */
+export const getHallWinners = (categoryId: string, signal?: AbortSignal) =>
+  get<{ winners: HallWinner[] }>(`/history/categories/${encodeURIComponent(categoryId)}`, signal).then((d) => {
+    const seen = new Set<string>()
+    return d.winners.filter((w) => !seen.has(w.name) && seen.add(w.name))
+  })
+
 export interface PollCategory {
   id: string
   title: string

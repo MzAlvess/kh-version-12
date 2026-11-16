@@ -53,7 +53,7 @@ export function FindHabboBox({ initialNick }: { initialNick: string }) {
   const [showAll, setShowAll] = useState(false)
   const name = history[index]
 
-  const { data, error, loading, previous, reload } = useAsync(`find-${name.toLowerCase()}`, (signal) =>
+  const { data, error, loading, previous, reload } = useAsync(name ? `find-${name.toLowerCase()}` : null, (signal) =>
     findHabbo(name, signal),
   )
   const result = data ?? (loading ? previous : undefined)
@@ -61,6 +61,11 @@ export function FindHabboBox({ initialNick }: { initialNick: string }) {
   const search = (value: string) => {
     const nick = value.trim()
     if (!nick || nick.toLowerCase() === name.toLowerCase()) return
+    if (!name) {
+      setHistory([nick])
+      setIndex(0)
+      return
+    }
     const next = [...history.slice(0, index + 1), nick]
     setHistory(next)
     setIndex(next.length - 1)

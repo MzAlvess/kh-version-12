@@ -40,7 +40,7 @@ export function TopLocutoresBox() {
 export function DefaultSidebar({ userNick, hide = [] }: { userNick: string; hide?: ('find' | 'ranking' | 'agenda')[] }) {
   return (
     <>
-      {!hide.includes('find') && <FindHabboBox initialNick={userNick} />}
+      {!hide.includes('find') && <FindHabboBox key={userNick} initialNick={userNick} />}
       {!hide.includes('ranking') && <TopLocutoresBox />}
       {!hide.includes('agenda') && <EventsBox title="Agenda" accent="green" showPublish />}
     </>
