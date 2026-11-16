@@ -12,7 +12,7 @@ import { DEFAULT_STREAM_URL, RadioPanel } from './RadioPanel/RadioPanel'
 const STATUS_REFRESH_MS = 60_000
 
 /** Estrutura comum de todas as páginas: header + rádio + conteúdo + rodapé */
-export function Layout({ user }: { user: HeaderUser }) {
+export function Layout({ user, authLoading }: { user: HeaderUser | null; authLoading?: boolean }) {
   const { pathname, hash } = useLocation()
   const status = useAsync('layout-player', (s) => getPlayerStatus(s))
   const { reload } = status
@@ -37,7 +37,7 @@ export function Layout({ user }: { user: HeaderUser }) {
 
   return (
     <>
-      <Header user={user} />
+      <Header user={user} authLoading={authLoading} />
       <RadioPanel
         locutor={live ? radio!.locutor! : 'AutoDJ'}
         programa={radio?.program ?? (live ? 'Ao vivo' : 'Programação automática')}

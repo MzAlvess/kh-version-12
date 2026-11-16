@@ -125,6 +125,31 @@ O mercado está fechado e sem anúncios, então o formato de um anúncio não p�
 
 **Formulários das páginas:** "Faça parte da equipe" e "Contato" usam os `handlers` de `App.tsx` com as chaves `'faca-parte'` e `'contato'`. Sem handler, o envio é simulado. A API atual tem `/v1/support/tickets`, mas ela exige login.
 
+## Login (missão do Habbo)
+
+Mesmo fluxo do kihabbo.com.br, usando a API dele (`src/services/kihabbo.ts` + `src/auth/`):
+
+1. **Entrar** → nick → `POST /v1/auth/habbo/challenge { habboName }` → mostra o código.
+2. O usuário coloca o código na **missão** do Habbo.
+3. **Já coloquei, confirmar** → `POST /v1/auth/habbo/verify { challengeId }` → a API cria a sessão (cookie `kihabbo_session`).
+4. `GET /v1/auth/me` ao abrir o site; **Sair** → `POST /v1/auth/logout`.
+
+| Logado pode | Rota |
+|---|---|
+| Comentar e responder | `POST /v1/comments { postId, text, parentId? }` |
+| Curtir notícia / comentário | `POST`/`DELETE /v1/news/posts/:id/like`, `/v1/comments/:id/like` |
+| Votar (Enquetes, Votar na enquete) | `POST /v1/polls/votes { categoryId, optionId }` |
+| Ticket (Abrir ticket, Utilidades › Contato) | `POST /v1/support/tickets { category, subject, message }` |
+
+Visitante vê **Entrar** no topo e no hub. Ações que exigem login abrem o login ou mostram "Entre com sua conta Habbo".
+
+**Formato de `/v1/auth/me` (conferido com uma conta real):**
+- `{ user: { id, username, displayName, avatarUser, memberSince, stats, isLive, role, roles, permissions, viewingAs, ban }, preferences }`, lido por `normalizeUser()`.
+- A conta do Kihabbo **não tem saldo de fichas**: a pílula mostra **0 fichas** para quem está logado e segue abrindo o "Gerar fichas". Quando a API informar um saldo, basta preencher `fichas` em `normalizeUser()`.
+- Conta com `ban` preenchido não comenta, não curte e não vota, mas pode abrir contato para contestar, como no site atual.
+
+Continuam simulados, porque não há rota pública na API: Notificar evento, Postar artigo, Gerar fichas, Config., Habbo e Faça parte da equipe.
+
 ## Caixas com dados do Habbo (sem backend)
 
 Três caixas buscam dados direto do navegador. As chamadas ficam em `src/services/habbo.ts`.

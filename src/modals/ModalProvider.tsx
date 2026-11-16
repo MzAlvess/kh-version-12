@@ -5,6 +5,7 @@ import type { ModalComponentProps, ModalData, ModalHandlers, ModalName, PageForm
 import { AbrirTicket } from './forms/AbrirTicket'
 import { Config } from './forms/Config'
 import { Enquetes } from './forms/Enquetes'
+import { Entrar } from './forms/Entrar'
 import { GerarFichas } from './forms/GerarFichas'
 import { Habbo } from './forms/Habbo'
 import { NotificarEvento } from './forms/NotificarEvento'
@@ -23,6 +24,7 @@ const registry: Record<ModalName, ComponentType<ModalComponentProps>> = {
   enquetes: Enquetes,
   config: Config,
   habbo: Habbo,
+  entrar: Entrar,
 }
 
 /** Enquanto o backend não liga um modal: mostra os dados no console e simula o envio. */

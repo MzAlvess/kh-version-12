@@ -11,6 +11,7 @@ export type ModalName =
   | 'enquetes'
   | 'config'
   | 'habbo'
+  | 'entrar'
 
 /** Função que o backend implementa para cada modal. Lançar um Error mostra a mensagem no modal. */
 export type SubmitHandler = (values: FormValues) => void | Promise<void>

@@ -13,25 +13,149 @@ interface ApiResponse<T> {
 
 export class ApiError extends Error {
   status: number
-  constructor(message: string, status: number) {
+  /** código de erro da API (ex.: UNAUTHORIZED, ALREADY_LIKED) */
+  code?: string
+  constructor(message: string, status: number, code?: string) {
     super(message)
     this.status = status
+    this.code = code
   }
 }
 
-async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
-  const res = await fetch(`${API}${path}`, { signal, credentials: 'include' })
-  let body: ApiResponse<T> | null = null
+/** A sessão é um cookie HttpOnly (kihabbo_session): credentials 'include' envia/recebe o cookie. */
+async function request<T>(method: string, path: string, body?: unknown, signal?: AbortSignal): Promise<T> {
+  const res = await fetch(`${API}${path}`, {
+    method,
+    signal,
+    credentials: 'include',
+    headers: body !== undefined ? { 'Content-Type': 'application/json' } : undefined,
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+  })
+  let json: ApiResponse<T> | null = null
   try {
-    body = (await res.json()) as ApiResponse<T>
+    json = (await res.json()) as ApiResponse<T>
   } catch {
     /* resposta sem JSON */
   }
-  if (!res.ok || !body?.success) {
-    throw new ApiError(body?.error?.message ?? `Erro ${res.status}`, res.status)
+  if (!res.ok || !json?.success) {
+    throw new ApiError(json?.error?.message ?? `Erro ${res.status}`, res.status, json?.error?.code)
   }
-  return body.data
+  return json.data
 }
+
+const get = <T>(path: string, signal?: AbortSignal) => request<T>('GET', path, undefined, signal)
+const post = <T>(path: string, body?: unknown) => request<T>('POST', path, body ?? {})
+const del = <T>(path: string) => request<T>('DELETE', path)
+
+/* ============================== login (missão do Habbo) ============================== */
+
+/**
+ * Usuário logado (formato real de GET /v1/auth/me):
+ * { user: { id, username, displayName, avatarUser, memberSince, stats, isLive, role, roles,
+ *           permissions, viewingAs, ban }, preferences: { theme } }
+ */
+export interface AuthUser {
+  id: string
+  username: string
+  displayName: string
+  /** nick usado para o avatar no habbo-imaging */
+  avatarUser: string
+  /** 'member', ... */
+  role: string
+  roles: string[]
+  permissions: string[]
+  /** dd/mm/aaaa */
+  memberSince: string | null
+  stats: { hypes: number; comments: number; votes: number }
+  /** locutor ao vivo agora */
+  isLive: boolean
+  /** banido: perde as interações do site (só pode abrir contato) */
+  banned: boolean
+  banReason: string | null
+  /** saldo de fichas: a conta do Kihabbo ainda não tem (o header mostra 0) */
+  fichas: number | null
+}
+
+const asStrings = (v: unknown) => (Array.isArray(v) ? v.map(String) : [])
+
+export function normalizeUser(data: unknown): AuthUser | null {
+  if (!data || typeof data !== 'object') return null
+  const root = data as Record<string, unknown>
+  const u = (root.user && typeof root.user === 'object' ? root.user : root) as Record<string, unknown>
+  const username = typeof u.username === 'string' && u.username ? u.username : null
+  if (!username) return null
+  const stats = (u.stats ?? {}) as Record<string, unknown>
+  const ban = u.ban && typeof u.ban === 'object' ? (u.ban as Record<string, unknown>) : null
+  return {
+    id: String(u.id ?? username),
+    username,
+    displayName: typeof u.displayName === 'string' && u.displayName ? u.displayName : username,
+    avatarUser: typeof u.avatarUser === 'string' && u.avatarUser ? u.avatarUser : username,
+    role: typeof u.role === 'string' ? u.role : 'member',
+    roles: asStrings(u.roles),
+    permissions: asStrings(u.permissions),
+    memberSince: typeof u.memberSince === 'string' ? u.memberSince : null,
+    stats: { hypes: Number(stats.hypes) || 0, comments: Number(stats.comments) || 0, votes: Number(stats.votes) || 0 },
+    isLive: !!u.isLive,
+    banned: !!u.ban,
+    banReason: ban ? String(ban.reason ?? ban.motivo ?? '') || null : null,
+    fichas: null,
+  }
+}
+
+/** mensagem para conta banida (como no site atual: só pode abrir contato para contestar) */
+export const BANNED_MESSAGE =
+  'Sua conta está suspensa das interações do site. Para contestar, abra um contato em Utilidades › Contato.'
+
+/** usuário logado ou null (401 = visitante) */
+export async function getMe(signal?: AbortSignal): Promise<AuthUser | null> {
+  try {
+    return normalizeUser(await get<unknown>('/auth/me', signal))
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 401) return null
+    throw err
+  }
+}
+
+export interface MissionChallenge {
+  challengeId: string
+  code: string
+  expiresAt: string | null
+}
+
+/** passo 1: gera o código que o usuário coloca na missão do Habbo */
+export async function createChallenge(habboName: string): Promise<MissionChallenge> {
+  const d = await post<Record<string, unknown>>('/auth/habbo/challenge', { habboName: habboName.trim() })
+  const challengeId = String(d.challengeId ?? d.id ?? '')
+  const code = String(d.code ?? d.missionCode ?? d.token ?? d.mission ?? '')
+  if (!challengeId || !code) throw new ApiError('Resposta inesperada ao gerar o código.', 500)
+  return { challengeId, code, expiresAt: (d.expiresAt as string) ?? null }
+}
+
+/** passo 2: a API confere a missão e cria a sessão (cookie) */
+export const verifyChallenge = (challengeId: string) => post<unknown>('/auth/habbo/verify', { challengeId })
+
+export const logout = () => post<unknown>('/auth/logout')
+
+/* ============================== interações (exigem login) ============================== */
+
+export const likePost = (postId: string, like: boolean) =>
+  like
+    ? post<{ liked?: boolean; likesCount?: number }>(`/news/posts/${encodeURIComponent(postId)}/like`)
+    : del<{ liked?: boolean; likesCount?: number }>(`/news/posts/${encodeURIComponent(postId)}/like`)
+
+export const likeComment = (commentId: string, like: boolean) =>
+  like
+    ? post<{ liked: boolean; likesCount: number }>(`/comments/${encodeURIComponent(commentId)}/like`)
+    : del<{ liked: boolean; likesCount: number }>(`/comments/${encodeURIComponent(commentId)}/like`)
+
+export const votePoll = (categoryId: string, optionId: string) => post<unknown>('/polls/votes', { categoryId, optionId })
+
+/** categorias aceitas pela API de tickets (as mesmas do site atual) */
+export const TICKET_CATEGORIES = ['Problemas com a rádio', 'Dúvidas sobre emblemas', 'Denúncia de usuário', 'Sugestão', 'Outro']
+
+export const createTicket = (t: { category: string; subject: string; message: string }) =>
+  post<unknown>('/support/tickets', { category: t.category, subject: t.subject.trim(), message: t.message.trim() })
 
 /* ============================== notícias ============================== */
 
@@ -48,6 +172,8 @@ export interface Post {
   publishedAt: string | null
   commentsCount: number
   likesCount: number
+  /** o usuário logado já curtiu */
+  liked?: boolean
   tags: string[]
 }
 
@@ -85,11 +211,17 @@ export interface Comment {
   text: string
   createdAt: string
   likesCount: number
+  /** o usuário logado já curtiu */
+  liked?: boolean
   deleted: boolean
 }
 
 export const getComments = (postId: string, signal?: AbortSignal) =>
   get<{ comments: Comment[] }>(`/news/posts/${encodeURIComponent(postId)}/comments`, signal).then((d) => d.comments)
+
+/** comentar (ou responder, com parentId) — exige login */
+export const createComment = (postId: string, text: string, parentId?: string) =>
+  post<Comment>('/comments', { postId, text: text.trim(), ...(parentId ? { parentId } : {}) })
 
 /* ============================== rádio ============================== */
 

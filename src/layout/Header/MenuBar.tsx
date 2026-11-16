@@ -26,7 +26,7 @@ function MenuTile({ item }: { item: MenuItem }) {
   )
 }
 
-export function MenuBar({ user }: { user: HeaderUser }) {
+export function MenuBar({ user }: { user: HeaderUser | null }) {
   return (
     <nav className={`container ${styles.bar}`} aria-label="Menu principal">
       <ul className={`${styles.group} ${styles.left}`}>

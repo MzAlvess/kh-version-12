@@ -41,5 +41,9 @@ export const userLinksRight: UserLink[] = [
   { id: 'habbo', label: 'Habbo', modal: 'habbo', color: 'green' },
 ]
 
+/** botões do hub para quem não está logado */
+export const guestLinksLeft: UserLink[] = [{ id: 'entrar', label: 'Entrar', modal: 'entrar', color: 'green' }]
+export const guestLinksRight: UserLink[] = [{ id: 'enquetes', label: 'Enquetes', modal: 'enquetes', color: 'purple' }]
+
 export const habboAvatar = (nick: string, size: 's' | 'm' | 'l' = 'm') =>
   `https://www.habbo.com.br/habbo-imaging/avatarimage?user=${encodeURIComponent(nick)}&direction=4&head_direction=3&gesture=sml&size=${size}`

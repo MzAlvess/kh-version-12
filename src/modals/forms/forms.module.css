@@ -142,3 +142,10 @@
 .back:hover {
   text-decoration: underline;
 }
+
+/* login */
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}

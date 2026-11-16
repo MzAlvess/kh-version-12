@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Box } from '../components/Box/Box'
-import { Field, FormRow, ImageUpload, Input, Select, Textarea } from '../components/Form/Form'
+import { Field, FormRow, Input, Notice, Select, Textarea } from '../components/Form/Form'
 import { InlineForm } from '../components/Form/InlineForm'
 import { Modal } from '../components/Modal/Modal'
 import { PageGrid } from '../components/PageGrid/PageGrid'
@@ -10,6 +10,8 @@ import { HabboImagerBox } from '../features/HabboImager/HabboImagerBox'
 import { DefaultSidebar } from '../features/Sidebar/Sidebar'
 import { useAsync } from '../hooks/useAsync'
 import { useModal } from '../modals/modalContext'
+import { useAuth } from '../auth/authContext'
+import { TicketFields } from '../modals/forms/AbrirTicket'
 import { areasEquipe } from '../content/kihabbo'
 import { formatDate, searchBadges, type NewBadge } from '../services/habbo'
 import { swapToFallback } from '../components/BadgeImage/fallback'
@@ -90,38 +92,22 @@ function FacaParte({ nick }: { nick: string }) {
 
 function Contato() {
   const { getHandler } = useModal()
+  const { user } = useAuth()
   return (
     <>
-      <p className={styles.lead}>Dúvidas, sugestões ou problemas? Fale com a equipe. Respondemos pelo seu perfil.</p>
+      <p className={styles.lead}>Dúvidas, sugestões ou problemas? Fale com a equipe. A resposta chega pelo seu perfil.</p>
+      {!user && (
+        <div className={styles.loginNotice}>
+          <Notice>Você precisa entrar com sua conta Habbo para enviar um contato.</Notice>
+        </div>
+      )}
       <InlineForm
         tone="orange"
-        submitLabel="Enviar mensagem"
+        submitLabel="Enviar contato"
         onSubmit={getHandler('contato')}
-        success={{ title: 'Mensagem enviada!', text: 'Você recebe uma notificação quando a equipe responder.' }}
+        success={{ title: 'Contato enviado!', text: 'Você recebe uma notificação quando a equipe responder.' }}
       >
-        <FormRow>
-          <Field label="Assunto" name="assunto" required>
-            <Select name="assunto" required defaultValue="">
-              <option value="" disabled>
-                Selecione...
-              </option>
-              <option value="suporte">Suporte</option>
-              <option value="denuncia">Denúncia</option>
-              <option value="banimento">Contestar banimento</option>
-              <option value="parceria">Parceria</option>
-              <option value="sugestao">Sugestão</option>
-            </Select>
-          </Field>
-          <Field label="Título" name="titulo" required>
-            <Input name="titulo" required maxLength={80} />
-          </Field>
-        </FormRow>
-        <Field label="Mensagem" name="mensagem" required>
-          <Textarea name="mensagem" rows={5} required minLength={10} maxLength={1000} />
-        </Field>
-        <Field label="Anexo" name="anexo" hint="Opcional: um print ajuda a resolver mais rápido.">
-          <ImageUpload name="anexo" aspect="16 / 4" />
-        </Field>
+        <TicketFields />
       </InlineForm>
     </>
   )

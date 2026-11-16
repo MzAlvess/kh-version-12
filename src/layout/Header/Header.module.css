@@ -155,3 +155,25 @@
     margin-left: 8px;
   }
 }
+
+/* pílula de fichas como botão + variação "Entrar" (visitante) */
+button.pill {
+  padding-top: 0;
+  padding-bottom: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+button.pill:hover {
+  filter: brightness(1.04);
+}
+
+.loginPill {
+  width: auto;
+  padding: 0 24px;
+  justify-content: center;
+}
+
+.loginPill .amount {
+  margin-left: 0;
+}
