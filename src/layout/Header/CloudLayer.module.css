@@ -1,0 +1,35 @@
+.sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layer {
+  --tile: 978px; /* largura real de clouds.png */
+  position: absolute;
+  left: 0;
+  top: 72px;
+  width: calc(100% + var(--tile));
+  height: 118px;
+  background: url('/assets/clouds.png') repeat-x 0 0 / var(--tile) 118px;
+  image-rendering: pixelated;
+  animation: drift 80s linear infinite;
+  will-change: transform;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(calc(var(--tile) * -1));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer {
+    animation: none;
+  }
+}

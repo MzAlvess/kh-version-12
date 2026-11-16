@@ -1,0 +1,157 @@
+/* Céu: azul #00b9f6 com brilho radial no centro; termina em 609px (o painel da rádio sobe 160px nele) */
+.header {
+  position: relative;
+  min-height: 609px;
+  background:
+    radial-gradient(ellipse 1100px 300px at 50% 240px, var(--sky-glow), rgba(143, 224, 251, 0) 100%),
+    var(--sky);
+}
+
+.top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 45px;
+}
+
+.logo {
+  display: block;
+  flex-shrink: 0;
+}
+
+.logo img {
+  width: 270px;
+  height: 77px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  padding-top: 5px;
+}
+
+.key {
+  margin-right: 17px;
+}
+
+/* ---- pílula de fichas: 158 x 45 ---- */
+.pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 158px;
+  height: 45px;
+  border-radius: 23px;
+  border: 1px solid #906c14;
+  background: #fde000;
+  box-shadow:
+    inset 0 -3px 0 #e58719,
+    inset 0 -5px 0 #feef7f;
+  text-decoration: none;
+}
+
+.coin {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 1px solid #906c14;
+  background: radial-gradient(circle, #ffca3a 0 15px, #ffb700 16px);
+  box-shadow: inset 0 -3px 0 #e58719;
+  display: grid;
+  place-items: center;
+  color: #fb8c00;
+  font-weight: 700;
+  font-size: 19px;
+}
+
+.amount {
+  margin-left: 56px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #a37800;
+  white-space: nowrap;
+}
+
+.amount strong {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ---- hambúrguer 43px ---- */
+.menuBtn {
+  width: 43px;
+  height: 43px;
+  margin-left: 15px;
+  border-radius: 50%;
+  border: 1px solid #8e8e8e;
+  background: #e6e6e6;
+  box-shadow: inset 0 -3px 0 #c9c9c9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.menuBtn span {
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: #5c5c5c;
+}
+
+/* ================= responsivo ================= */
+@media (max-width: 900px) {
+  .header {
+    min-height: 0;
+    padding-bottom: 200px;
+  }
+}
+
+@media (max-width: 600px) {
+  .top {
+    padding-top: 20px;
+  }
+
+  .logo img {
+    width: 180px;
+    height: auto;
+  }
+
+  .key {
+    display: none;
+  }
+
+  .pill {
+    width: auto;
+    padding-right: 14px;
+  }
+
+  .amount {
+    margin-left: 52px;
+  }
+}
+
+@media (max-width: 400px) {
+  .logo img {
+    width: 140px;
+  }
+
+  .amount {
+    font-size: 0;
+  }
+
+  .amount strong {
+    font-size: 17px;
+  }
+
+  .menuBtn {
+    margin-left: 8px;
+  }
+}

@@ -1,0 +1,163 @@
+/* Hub: 389 x 233, centralizado. Coordenadas relativas ao topo da bolha (y=123 no layout) */
+.hub {
+  position: relative;
+  width: 389px;
+  height: 233px;
+}
+
+/* ---- bolha "Bem-vindo" (42px de altura) ---- */
+.bubble {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 4;
+  height: 42px;
+  padding: 0 18px 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transform: translateX(-50%);
+  border: 1px solid #0083c1;
+  border-radius: 6px;
+  background: #feffff;
+  box-shadow:
+    inset 0 -2px 0 #e4f2fb,
+    0 2px 0 rgba(0, 110, 170, 0.25);
+  color: #555;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.bubble strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  background: #feffff;
+  border-right: 1px solid #0083c1;
+  border-bottom: 1px solid #0083c1;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* ---- plataforma 300 x 135 (+16 de espessura) ---- */
+.platform {
+  position: absolute;
+  left: 44px;
+  top: 82px;
+  width: 300px;
+  height: 151px;
+  z-index: 1;
+}
+
+.platformTile {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(0 8px 10px rgba(0, 90, 150, 0.15));
+}
+
+.ring {
+  position: absolute;
+  left: 50%;
+  top: 72px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.r1 { width: 150px; height: 54px; background: #f2f7f5; }
+.r2 { width: 118px; height: 42px; background: #e1ecee; }
+.r3 { width: 86px; height: 30px; background: #cadde5; top: 75px; }
+
+.avatar {
+  position: absolute;
+  left: 50%;
+  top: -31px;
+  max-width: none;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+/* ---- painéis de botões ---- */
+.panel {
+  position: absolute;
+  top: 65px;
+  z-index: 3;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+/* setinha apontando para a plataforma */
+.panel::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  border: 7px solid transparent;
+  transform: translateY(-50%);
+}
+
+.left::after {
+  left: 100%;
+  border-left-color: rgba(0, 0, 0, 0.2);
+}
+
+.right::after {
+  right: 100%;
+  border-right-color: rgba(0, 0, 0, 0.2);
+}
+
+.link {
+  display: grid;
+  place-items: center;
+  width: 97px;
+  height: 36px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: filter 0.15s;
+}
+
+li + li .link {
+  border-top-width: 0;
+  height: 36px;
+}
+
+.link:hover {
+  filter: brightness(1.08);
+}
+
+.yellow { background: var(--hub-yellow); }
+.orange { background: var(--hub-orange); }
+.red { background: var(--hub-red); }
+.purple { background: var(--hub-purple); }
+.cyan { background: var(--hub-cyan); }
+.green { background: var(--hub-green); }
+
+/* telas muito estreitas: reduz o conjunto inteiro */
+@media (max-width: 420px) {
+  .hub {
+    zoom: 0.82;
+  }
+}

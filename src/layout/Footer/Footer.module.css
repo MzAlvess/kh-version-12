@@ -1,0 +1,119 @@
+/* Fundo = Group 305.png do kihabbo-new (céu 208px + grama). Altura 362px como no layout. */
+.footer {
+  background: url('/assets/footer-bg.png') repeat-x center top / 1920px 372px, #9dc839;
+  overflow: hidden;
+}
+
+.inner {
+  position: relative;
+  height: 362px;
+}
+
+/* posições absolutas contam a partir da borda do container: somar o gutter */
+.mascot {
+  position: absolute;
+  left: calc(var(--gutter) - 5px);
+  top: 61px;
+  max-width: none;
+}
+
+.text {
+  position: absolute;
+  left: calc(var(--gutter) + 298px);
+  top: 45px;
+  width: 704px;
+}
+
+.text p {
+  margin: 0;
+}
+
+.copy {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #202f4c;
+}
+
+.disclaimer {
+  margin-top: 12px !important;
+  font-size: 13px;
+  line-height: 18px;
+  color: #12384a;
+}
+
+.credits {
+  display: flex;
+  gap: 10px;
+  margin-top: 33px !important;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 700;
+  font-style: italic;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 60, 100, 0.25);
+}
+
+.credits span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.badge {
+  position: absolute;
+  left: calc(var(--gutter) + 1070px);
+  top: 66px;
+  max-width: none;
+}
+
+/* ================= responsivo ================= */
+@media (max-width: 1180px) {
+  .badge {
+    left: auto;
+    right: var(--gutter);
+  }
+
+  .text {
+    width: auto;
+    right: 170px;
+  }
+}
+
+@media (max-width: 900px) {
+  .mascot {
+    display: none;
+  }
+
+  .text {
+    left: var(--gutter);
+  }
+}
+
+/* celular: tudo em fluxo normal sobre o céu, grama embaixo */
+@media (max-width: 640px) {
+  .footer {
+    background:
+      linear-gradient(#9dc839, #9dc839) bottom / 100% 70px no-repeat,
+      linear-gradient(#219dc6 0 1px, #2bc5f7 2px, #49caf5 100%);
+  }
+
+  .inner {
+    height: auto;
+    padding-top: 28px;
+    padding-bottom: 100px;
+  }
+
+  .text,
+  .badge {
+    position: static;
+  }
+
+  .badge {
+    margin-top: 20px;
+  }
+
+  .credits {
+    margin-top: 20px !important;
+  }
+}

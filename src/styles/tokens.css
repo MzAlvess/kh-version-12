@@ -1,0 +1,72 @@
+/* Todas as cores foram amostradas do layout original (public/assets/_mockup-referencia.png) */
+:root {
+  /* Céu */
+  --sky: #00b9f6;
+  --sky-glow: #8fe0fb;
+  --page-bg: #e5edf4;
+
+  /* Cores de ação */
+  --green: #a6d33d;
+  --green-border: #96be37;
+  --green-shadow: #7a9b2d;
+  --pink: #e4476f;
+  --pink-border: #c73e61;
+  --pink-shadow: #a8334f;
+  --orange: #ff7133;
+  --orange-border: #e6662e;
+  --orange-shadow: #c2541f;
+  --teal: #447281;
+  --teal-border: #3d6774;
+  --teal-shadow: #2f525e;
+
+  /* Botões do hub do usuário */
+  --hub-yellow: #ffad31;
+  --hub-orange: #ff7133;
+  --hub-red: #ee2d36;
+  --hub-purple: #8f6ac8;
+  --hub-cyan: #00c0f4;
+  --hub-green: #2fc31e;
+
+  /* Caixas claras */
+  --box-bg: #fffffb;
+  --box-border: #d0d7dd;
+  --box-band: #e0e3f2;
+  --box-header: #f3f7fc;
+  --nav-bg: #e7eef6;
+  --nav-border: #d0d7de;
+  --nav-shadow: #bcc2c8;
+  --input-bg: #fafcff;
+
+  /* Caixas escuras (lateral) */
+  --dark-bg: #43707f;
+  --dark-header: #335662;
+  --dark-band: #3b6270;
+  --dark-edge: #819aa4;
+  --dark-nav: #253f47;
+  --dark-nav-border: #20373e;
+  --dark-input-border: #3b535a;
+  --dark-btn: #32515c;
+  --dark-btn-border: #2d4a54;
+
+  /* Player */
+  --pill-bg: #f5fcff;
+  --pill-icon-bg: #e8f8ff;
+  --pill-border: #c4d7ff;
+  --player-bar: #f5fafc;
+  --player-dark: #3e5d68;
+  --player-icon: #34505c;
+
+  /* Tiles isométricos */
+  --tile-top: #fffffb;
+  --tile-left: #e0e3f2;
+  --tile-right: #c6d7fe;
+
+  /* Texto */
+  --text: #494949;
+  --text-strong: #2d3a45;
+  --text-muted: #8a9198;
+
+  --container: 1200px;
+  --gutter: 16px;
+  --font: 'Fira Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}

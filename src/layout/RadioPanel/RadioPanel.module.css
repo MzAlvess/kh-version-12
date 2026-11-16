@@ -1,0 +1,297 @@
+/* Card de 1200px que começa em y=449 (sobe 160px dentro do céu) */
+.wrap {
+  position: relative;
+  z-index: 3;
+  margin-top: -160px;
+}
+
+.card {
+  background: var(--box-bg);
+  border: 1px solid #b7bec3;
+  border-top-color: #1c9cc6;
+  border-radius: 24px;
+  box-shadow: inset 0 -8px 0 var(--box-band);
+}
+
+/* ================= barra do player (68px) ================= */
+.bar {
+  display: flex;
+  align-items: center;
+  height: 68px;
+  padding: 0 27px 0 29px;
+  background: var(--player-bar);
+  border-bottom: 2px solid var(--box-band);
+  border-radius: 23px 23px 0 0;
+}
+
+.locutor {
+  position: relative;
+  flex: 0 0 88px;
+  height: 68px;
+  margin-right: 17px;
+}
+
+.locutorTile {
+  position: absolute;
+  left: 0;
+  top: 41px;
+  z-index: 1;
+}
+
+.locutorImg {
+  position: absolute;
+  left: 50%;
+  top: -48px;
+  z-index: 2;
+  max-width: none;
+  transform: translateX(-50%);
+}
+
+.controls {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+/* pílulas: 44px, ícone numa área de 42px separada por uma linha */
+.pill {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  min-width: 0;
+  border: 1px solid var(--pill-border);
+  border-radius: 22px;
+  background: var(--pill-bg);
+  overflow: hidden;
+}
+
+.pillIcon {
+  flex: 0 0 42px;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: var(--pill-icon-bg);
+  border-right: 1px solid var(--pill-border);
+  color: var(--player-icon);
+}
+
+.pillText {
+  flex: 1;
+  min-width: 0;
+  padding: 0 14px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wLocutor { flex: 0 1 157px; }
+.wPrograma { flex: 0 1 197px; }
+.wVolume { flex: 0 0 198px; cursor: pointer; }
+
+.music {
+  flex: 1 1 298px;
+}
+
+.music .pillText {
+  text-align: left;
+  padding-left: 21px;
+  font-weight: 400;
+}
+
+.round {
+  flex: 0 0 43px;
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  border: 1px solid var(--pill-border);
+  background: var(--pill-icon-bg);
+  color: var(--player-icon);
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.play {
+  flex-basis: 44px;
+  width: 44px;
+  height: 44px;
+  background: var(--player-dark);
+  border-color: #2f4a54;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.18);
+  color: #fff;
+}
+
+/* volume: a parte clara é o nível atual */
+.track {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  background: var(--pill-icon-bg);
+}
+
+.fill {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  bottom: -1px;
+  width: var(--vol);
+  background: #f9fdff;
+  border: 1px solid var(--pill-border);
+  border-left: 0;
+  border-radius: 0 22px 22px 0;
+}
+
+.track input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.arrow {
+  flex: 0 0 auto;
+  margin-left: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* ================= slots ================= */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 546fr) 2px minmax(0, 264fr) 2px minmax(0, 264fr);
+  column-gap: 18px;
+  padding: 20px 24px 36px;
+}
+
+.banner {
+  height: 215px;
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+}
+
+.bannerSlot {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  background: repeating-linear-gradient(45deg, #f2f5f8 0 12px, #e9eef3 12px 24px);
+  color: #9aa3ab;
+  font-size: 12px;
+}
+
+.divider {
+  margin-top: 9px;
+  height: 217px;
+  background: #f4f4f4;
+}
+
+.topTitle {
+  font-weight: 600;
+}
+
+.topTitle span {
+  font-weight: 400;
+}
+
+/* ================= responsivo ================= */
+@media (max-width: 1180px) {
+  .wLocutor,
+  .wPrograma {
+    flex-basis: 140px;
+  }
+
+  .wVolume {
+    flex-basis: 150px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) 2px minmax(0, 1fr);
+    row-gap: 24px;
+  }
+
+  .banner {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+
+  .divider:first-of-type {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .bar {
+    height: auto;
+    padding: 12px 20px 12px 16px;
+    align-items: flex-start;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .music {
+    flex-basis: 100%;
+    order: 10;
+  }
+
+  .wLocutor,
+  .wPrograma {
+    flex: 1 1 150px;
+  }
+
+  .locutor {
+    height: 98px;
+  }
+
+  .locutorTile {
+    top: 58px;
+  }
+
+  .locutorImg {
+    top: -14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .locutor,
+  .arrow {
+    display: none;
+  }
+
+  .wLocutor,
+  .wPrograma {
+    flex: 1 1 140px;
+  }
+
+  .wVolume {
+    flex: 1 1 120px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px 16px 28px;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .banner {
+    height: 170px;
+  }
+}
