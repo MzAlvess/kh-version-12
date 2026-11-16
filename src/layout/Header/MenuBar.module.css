@@ -65,7 +65,8 @@
 }
 
 .tile:hover .icon,
-.tile:focus-visible .icon {
+.tile:focus-visible .icon,
+.current .icon {
   transform: translate(-50%, -6px);
 }
 

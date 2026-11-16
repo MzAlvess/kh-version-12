@@ -41,6 +41,8 @@ export interface NewBadge {
   name: string
   description: string
   imageUrl: string
+  /** imagem reserva (.png no CDN do Habbo), para emblemas que não têm a versão .gif */
+  fallbackUrl?: string
   createdAt: string
 }
 
@@ -86,6 +88,8 @@ export function avatarUrl({
 }
 
 export const badgeUrl = (code: string) => `https://images.habbo.com/c_images/album1584/${encodeURIComponent(code)}.gif`
+/** versão .png (existe também para emblemas que não têm .gif) */
+export const badgePngUrl = (code: string) => `https://images.habbo.com/c_images/album1584/${encodeURIComponent(code)}.png`
 
 /* ============================== API ============================== */
 
@@ -113,8 +117,16 @@ interface AssetsBadge {
 }
 
 /** Emblemas mais recentes do hotel BR (HabboAssets). */
-export async function getNewBadges({ limit = 6, offset = 0 }, signal?: AbortSignal): Promise<NewBadge[]> {
-  const url = `${HABBO_ASSETS_API}/badges?hotel=com.br&order=desc&limit=${limit}&offset=${offset}`
+export const getNewBadges = ({ limit = 6, offset = 0 }, signal?: AbortSignal) =>
+  searchBadges({ term: '', limit, offset }, signal)
+
+/** Busca emblemas do hotel BR por código ou nome (HabboAssets), do mais novo para o mais antigo. */
+export async function searchBadges(
+  { term = '', limit = 24, offset = 0 }: { term?: string; limit?: number; offset?: number },
+  signal?: AbortSignal,
+): Promise<NewBadge[]> {
+  const q = term ? `&term=${encodeURIComponent(term)}` : ''
+  const url = `${HABBO_ASSETS_API}/badges?hotel=com.br&order=desc&limit=${limit}&offset=${offset}${q}`
   const data = await getJson<{ badges?: AssetsBadge[]; error?: string }>(url, signal)
   if (!data.badges) throw new Error(data.error ?? 'Resposta inesperada do HabboAssets')
   return data.badges.map((b) => ({
@@ -122,6 +134,7 @@ export async function getNewBadges({ limit = 6, offset = 0 }, signal?: AbortSign
     name: b.name,
     description: b.description,
     imageUrl: b.url_habbo || badgeUrl(b.code),
+    fallbackUrl: badgePngUrl(b.code),
     createdAt: b.created_at,
   }))
 }

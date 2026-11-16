@@ -5,6 +5,7 @@ import { Modal } from '../../components/Modal/Modal'
 import { useAsync } from '../../hooks/useAsync'
 import {
   avatarUrl,
+  badgePngUrl,
   badgeUrl,
   formatDate,
   getProfile,
@@ -14,6 +15,7 @@ import {
   type HabboBadge,
   type HabboProfile,
 } from '../../services/habbo'
+import { swapToFallback } from '../../components/BadgeImage/fallback'
 import styles from './FindHabboBox.module.css'
 
 interface Result {
@@ -107,7 +109,13 @@ export function FindHabboBox({ initialNick }: { initialNick: string }) {
           <ul className={styles.allBadges}>
             {result.profile.badges.map((b) => (
               <li key={b.code} title={`${b.name}${b.description ? ` — ${b.description}` : ''}`}>
-                <img src={badgeUrl(b.code)} alt={b.name} loading="lazy" className="pixel" />
+                <img
+                    src={badgeUrl(b.code)}
+                    onError={swapToFallback(badgePngUrl(b.code))}
+                    alt={b.name}
+                    loading="lazy"
+                    className="pixel"
+                  />
               </li>
             ))}
           </ul>
@@ -133,7 +141,13 @@ function Profile({ result, onShowAll }: { result: Result; onShowAll: () => void 
             <ul className={styles.badgeGrid}>
               {Array.from({ length: 6 }, (_, i) => badges[i]).map((b, i) => (
                 <li key={b?.code ?? i} title={b ? b.name : undefined}>
-                  {b && <img src={badgeUrl(b.code)} alt={b.name} loading="lazy" className="pixel" />}
+                  {b && <img
+                    src={badgeUrl(b.code)}
+                    onError={swapToFallback(badgePngUrl(b.code))}
+                    alt={b.name}
+                    loading="lazy"
+                    className="pixel"
+                  />}
                 </li>
               ))}
             </ul>

@@ -1,0 +1,50 @@
+/* Layout: coluna principal 860px + lateral 310px, 30px entre elas; 53px abaixo do painel da rádio */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 860fr) minmax(0, 310fr);
+  gap: 30px;
+  align-items: start;
+  margin-top: 53px;
+  margin-bottom: 219px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  min-width: 0;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+
+/* tablet: lateral desce e vira grade de 2 colunas */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    margin-bottom: 120px;
+  }
+
+  .side {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    margin-top: 32px;
+    margin-bottom: 80px;
+    gap: 24px;
+  }
+
+  .main {
+    gap: 24px;
+  }
+}

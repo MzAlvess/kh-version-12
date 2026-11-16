@@ -4,6 +4,7 @@ import { Button } from '../../components/Button/Button'
 import { Modal } from '../../components/Modal/Modal'
 import { useAsync } from '../../hooks/useAsync'
 import { formatDate, getNewBadges, type NewBadge } from '../../services/habbo'
+import { swapToFallback } from '../../components/BadgeImage/fallback'
 import styles from './NewBadgesBox.module.css'
 
 const PAGE_SIZE = 6
@@ -48,7 +49,8 @@ export function NewBadgesBox() {
                   <button type="button" className={styles.card} onClick={() => setSelected(b)} title={b.name}>
                     <span className={styles.image}>
                       {isNew(b.createdAt) && <img src="/assets/ui/new.png" alt="Novo" className={`${styles.new} pixel`} />}
-                      <img src={b.imageUrl} alt={b.name} loading="lazy" className="pixel" />
+                      <img src={b.imageUrl}
+                onError={swapToFallback(b.fallbackUrl)} alt={b.name} loading="lazy" className="pixel" />
                     </span>
                     <span className={styles.code}>{b.code}</span>
                   </button>
@@ -66,7 +68,8 @@ export function NewBadgesBox() {
         <Modal title="Emblema" tone="pink" size="sm" onClose={() => setSelected(null)}>
           <div className={styles.detail}>
             <span className={styles.detailImage}>
-              <img src={selected.imageUrl} alt="" className="pixel" />
+              <img src={selected.imageUrl}
+                onError={swapToFallback(selected.fallbackUrl)} alt="" className="pixel" />
             </span>
             <strong>{selected.name || selected.code}</strong>
             {selected.description && <p>{selected.description}</p>}

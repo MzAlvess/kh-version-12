@@ -15,7 +15,10 @@ export type ModalName =
 /** Função que o backend implementa para cada modal. Lançar um Error mostra a mensagem no modal. */
 export type SubmitHandler = (values: FormValues) => void | Promise<void>
 
-export type ModalHandlers = Partial<Record<ModalName, SubmitHandler>>
+/** Formulários que ficam dentro das páginas (não são modais) */
+export type PageFormName = 'faca-parte' | 'contato'
+
+export type ModalHandlers = Partial<Record<ModalName | PageFormName, SubmitHandler>>
 
 export interface Poll {
   id: string

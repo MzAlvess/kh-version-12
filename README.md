@@ -83,6 +83,32 @@ Para abrir um modal de qualquer componente: `const { openModal } = useModal(); o
 **Criar um novo modal:** crie o arquivo em `src/modals/forms/` usando `<FormModal>` e os campos de `src/components/Form` (`Field`, `Input`, `Select`, `Textarea`, `ImageUpload`, `Switch`, `ChoiceList`, `FormRow`, `Notice`). Depois registre o nome em `types.ts` e no `registry` do `ModalProvider.tsx`.
 A validação usa os atributos nativos (`required`, `maxLength`, `pattern`, `min`...) e mostra as mensagens no padrão do site.
 
+## Páginas
+
+Todas usam o mesmo layout (`src/layout/Layout.tsx`): header, painel da rádio, grade 860 + 310px e rodapé.
+O painel da rádio fica montado ao trocar de página, então a rádio continua tocando.
+
+| Rota | Página | Conteúdo | Dados |
+|---|---|---|---|
+| `/` | Home | layout original | — |
+| `/kihabbo` | `KihabboPage` | abas História (linha do tempo), Equipe, Regras (`?aba=equipe`) | `src/content/kihabbo.ts` + `/v1/team` |
+| `/habbo-hotel` | `HabboHotelPage` | Sobre o jogo, Como jogar, Hotéis pelo mundo, Curiosidades | `src/content/habbo.ts` |
+| `/noticias` | `NoticiasPage` | lista com busca e paginação | `/v1/news/posts` |
+| `/noticias/:slug` | `NoticiaPage` | notícia (Markdown) + comentários | `/v1/news/posts/:slug`, `/comments` |
+| `/radio` | `RadioPage` | no ar agora, ranking (mês/geral), Melhores da rodada | `/v1/player/status`, `/v1/rankings/locutores`, `/v1/polls/categories` |
+| `/utilidades` | `UtilidadesPage` | Faça parte da equipe, Contato, Busca de emblemas, Habbo imager | formulários + HabboAssets |
+
+A coluna lateral das páginas internas (`features/Sidebar`) mostra Encontrar habbo, Top locutores (`/v1/rankings`) e Agenda (`/v1/agenda/events`).
+
+**API do Kihabbo:** as páginas usam a mesma API pública do site atual (`kihabbo.com.br/v1`), em `src/services/kihabbo.ts`. Ela só aceita CORS do próprio domínio:
+- **Em produção:** o site precisa ficar em `kihabbo.com.br`, no mesmo domínio da API.
+- **No `npm run dev` / `preview`:** o Vite repassa `/v1` para a API real (`vite.config.ts`).
+- **Outro servidor:** defina `VITE_KIHABBO_API` no `.env`.
+
+**Deploy (SPA):** configure o servidor para responder `index.html` em qualquer rota que não seja arquivo nem `/v1` (ex.: `try_files $uri /index.html;` no nginx). Sem isso, abrir `/noticias` direto dá 404.
+
+**Formulários das páginas:** "Faça parte da equipe" e "Contato" usam os `handlers` de `App.tsx` com as chaves `'faca-parte'` e `'contato'`. Sem handler, o envio é simulado. A API atual tem `/v1/support/tickets`, mas ela exige login.
+
 ## Caixas com dados do Habbo (sem backend)
 
 Três caixas buscam dados direto do navegador. As chamadas ficam em `src/services/habbo.ts`.

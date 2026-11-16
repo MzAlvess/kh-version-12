@@ -1,16 +1,20 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { type CSSProperties, type ReactNode } from 'react'
 import { Box } from '../../components/Box/Box'
 import { Icon } from '../../components/Icon/Icon'
 import { IsoTile } from '../../components/IsoTile/IsoTile'
+import { useRadioPlayer } from '../../hooks/useRadioPlayer'
 import { useModal } from '../../modals/modalContext'
 import { habboAvatar } from '../Header/menu'
 import styles from './RadioPanel.module.css'
+
+/** stream MP3 ao vivo da Kihabbo (o mesmo do site atual) */
+export const DEFAULT_STREAM_URL = 'https://radio.kihabbo.com.br/'
 
 export interface RadioPanelProps {
   locutor: string
   programa: string
   musica: string
-  /** URL do stream (Shoutcast/Icecast). Sem ela o play só alterna o ícone. */
+  /** URL do stream MP3 (vem de /v1/player/status) */
   streamUrl?: string
   /** Avatar do locutor; padrão: habbo-imaging pelo nick */
   locutorAvatarUrl?: string
@@ -27,7 +31,7 @@ export function RadioPanel({
   locutor,
   programa,
   musica,
-  streamUrl,
+  streamUrl = DEFAULT_STREAM_URL,
   locutorAvatarUrl,
   onFavorite,
   onArrowClick,
@@ -37,22 +41,16 @@ export function RadioPanel({
   onVotarEnquete,
 }: RadioPanelProps) {
   const { openModal } = useModal()
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const [playing, setPlaying] = useState(false)
-  const [volume, setVolume] = useState(78)
-
-  useEffect(() => {
-    if (audioRef.current) audioRef.current.volume = volume / 100
-  }, [volume])
-
-  const togglePlay = () => {
-    const audio = audioRef.current
-    if (audio) {
-      if (playing) audio.pause()
-      else audio.play().catch(() => setPlaying(false))
-    }
-    setPlaying((p) => !p)
-  }
+  const player = useRadioPlayer(streamUrl, { title: musica, artist: `${locutor} · ${programa}` })
+  const active = player.status === 'playing' || player.status === 'loading'
+  const effectiveVolume = player.muted ? 0 : player.volume
+  const volumeIcon = effectiveVolume === 0 ? 'volume-off' : effectiveVolume < 50 ? 'volume-low' : 'volume'
+  const musicText =
+    player.status === 'loading'
+      ? 'Conectando à rádio...'
+      : player.status === 'error'
+        ? 'Não foi possível conectar. Clique no play para tentar de novo.'
+        : musica
 
   return (
     <section className={`container ${styles.wrap}`} aria-label="Rádio Kihabbo">
@@ -87,39 +85,66 @@ export function RadioPanel({
 
             <button
               type="button"
-              className={`${styles.round} ${styles.play}`}
-              onClick={togglePlay}
-              aria-label={playing ? 'Pausar' : 'Tocar'}
+              className={`${styles.round} ${styles.play} ${player.status === 'loading' ? styles.connecting : ''} ${player.status === 'error' ? styles.failed : ''}`}
+              onClick={player.toggle}
+              aria-label={active ? 'Pausar a rádio' : 'Tocar a rádio'}
+              aria-pressed={active}
             >
-              <Icon name={playing ? 'pause' : 'play'} size={22} />
+              {player.status === 'loading' ? (
+                <span className={styles.spinner} aria-hidden="true" />
+              ) : (
+                <Icon name={active ? 'pause' : 'play'} size={22} />
+              )}
             </button>
 
-            <label className={`${styles.pill} ${styles.wVolume}`}>
-              <span className={styles.pillIcon}><Icon name="volume" size={18} /></span>
-              <span className={styles.track} style={{ '--vol': `${volume}%` } as CSSProperties}>
+            <div className={`${styles.pill} ${styles.wVolume}`}>
+              <button
+                type="button"
+                className={`${styles.pillIcon} ${styles.muteBtn}`}
+                onClick={player.toggleMute}
+                aria-label={player.muted ? 'Ativar som' : 'Silenciar'}
+                aria-pressed={player.muted}
+              >
+                <Icon name={volumeIcon} size={18} />
+              </button>
+              <span className={styles.track} style={{ '--vol': `${effectiveVolume}%` } as CSSProperties}>
                 <span className={styles.fill} />
                 <input
                   type="range"
                   min={0}
                   max={100}
-                  value={volume}
-                  onChange={(e) => setVolume(Number(e.target.value))}
+                  step={5}
+                  value={effectiveVolume}
+                  onChange={(e) => player.setVolume(Number(e.target.value))}
                   aria-label="Volume"
+                  aria-valuetext={`${effectiveVolume}%`}
                 />
               </span>
-            </label>
+            </div>
 
-            <span className={`${styles.pill} ${styles.music}`} title={musica}>
-              <span className={styles.pillIcon}><Icon name="music" size={20} /></span>
-              <span className={styles.pillText}>{musica}</span>
+            <span
+              className={`${styles.pill} ${styles.music} ${player.status === 'error' ? styles.musicError : ''}`}
+              title={musicText}
+              aria-live="polite"
+            >
+              <span className={`${styles.pillIcon} ${player.playing ? styles.equalizer : ''}`}>
+                {player.playing ? (
+                  <span className={styles.bars} aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                ) : (
+                  <Icon name="music" size={20} />
+                )}
+              </span>
+              <span className={styles.pillText}>{musicText}</span>
             </span>
           </div>
 
           <button type="button" className={styles.arrow} onClick={onArrowClick} aria-label="Mais opções da rádio">
             <img src="/assets/radio-arrow.png" alt="" width={22} height={20} className="pixel" />
           </button>
-
-          {streamUrl && <audio ref={audioRef} src={streamUrl} preload="none" />}
         </div>
 
         {/* ---------- slots ---------- */}

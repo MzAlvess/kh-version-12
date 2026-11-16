@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import { IsoTile } from '../../components/IsoTile/IsoTile'
 import { menuLeft, menuRight, type MenuItem } from './menu'
 import { UserHub } from './UserHub'
@@ -7,13 +8,20 @@ import styles from './MenuBar.module.css'
 function MenuTile({ item }: { item: MenuItem }) {
   return (
     <li className={styles.item}>
-      <a href={item.href} className={styles.tile}>
+      <NavLink
+        to={item.href}
+        end={item.href === '/'}
+        aria-label={item.label}
+        className={({ isActive }) => `${styles.tile} ${isActive ? styles.current : ''}`}
+      >
         <IsoTile width={100} thickness={9} className={styles.base} />
         <img src="/assets/menu/tile-shadow.png" alt="" width={40} height={10} className={styles.shadow} />
         {/* ícones em tamanho natural: pixel art não pode ser redimensionada */}
         <img src={item.icon} alt="" className={`${styles.icon} pixel`} />
-        <span className={styles.label}>{item.label}</span>
-      </a>
+        <span className={styles.label} aria-hidden="true">
+          {item.label}
+        </span>
+      </NavLink>
     </li>
   )
 }

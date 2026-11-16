@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { CloudLayer } from './CloudLayer'
 import { MenuBar } from './MenuBar'
 import styles from './Header.module.css'
@@ -20,9 +21,9 @@ export function Header({ user, onOpenMenu }: HeaderProps) {
       <CloudLayer />
 
       <div className={`container ${styles.top}`}>
-        <a href="/" className={styles.logo} aria-label="Kihabbo - página inicial">
+        <Link to="/" className={styles.logo} aria-label="Kihabbo - página inicial">
           <img src="/assets/logo.png" alt="Kihabbo" width={270} height={77} />
-        </a>
+        </Link>
 
         <div className={styles.right}>
           <img src="/assets/key.png" alt="" width={43} height={45} className={`${styles.key} pixel`} />
