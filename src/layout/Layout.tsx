@@ -6,6 +6,7 @@ import { getPlayerStatus } from '../services/kihabbo'
 import { DEFAULT_FIGURE } from '../features/HabboImager/figure'
 import { DestaquesBanner } from '../features/Destaques/DestaquesBanner'
 import { HabboStars } from '../features/HabboStars/HabboStars'
+import { TopEventosBox } from '../features/News/TopEventosBox'
 import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary'
 import { Footer } from './Footer/Footer'
 import { Header, type HeaderUser } from './Header/Header'
@@ -49,6 +50,7 @@ export function Layout({ user, authLoading }: { user: HeaderUser | null; authLoa
           musica={radio?.trackTitle ?? 'Kihabbo — A Rádio do Habbo Hotel'}
           streamUrl={radio?.streamUrl || DEFAULT_STREAM_URL}
           banner={<DestaquesBanner />}
+          topEventos={<TopEventosBox />}
           habboStars={<HabboStars />}
           locutorAvatarUrl={live ? undefined : avatarUrl({ figure: DEFAULT_FIGURE, direction: 4, size: 'm' })}
         />

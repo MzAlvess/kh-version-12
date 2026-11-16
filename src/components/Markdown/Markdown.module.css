@@ -16,10 +16,14 @@
   margin-bottom: 0;
 }
 
+.markdown p {
+  margin-top: 0;
+}
+
 .markdown h2,
 .markdown h3,
 .markdown h4 {
-  margin: 26px 0 0;
+  margin: 28px 0 0;
   color: var(--text);
   line-height: 1.3;
 }
@@ -61,19 +65,82 @@
   border-radius: 0 8px 8px 0;
   background: var(--box-header);
   color: var(--text);
-  font-style: italic;
+}
+
+.markdown blockquote > * + * {
+  margin-top: 8px;
 }
 
 .markdown hr {
+  margin: 22px 0;
   border: 0;
   border-top: 1px solid var(--box-band);
 }
 
+/* ---------- alinhamento ({.center} / #a=center) ---------- */
+.align_left { text-align: left; }
+.align_center { text-align: center; }
+.align_right { text-align: right; }
+.align_justify { text-align: justify; }
+
+/* ---------- imagens ---------- */
 .img {
-  display: block;
+  display: inline-block;
   max-width: 100%;
   height: auto;
-  margin: 8px auto;
-  border-radius: 8px;
-  image-rendering: auto;
+  vertical-align: middle;
+  border-radius: 6px;
 }
+
+/* parágrafo que é só uma imagem */
+.figure {
+  line-height: 0;
+}
+
+.figure .img {
+  margin: 4px 0;
+}
+
+/* ---------- caixas de destaque (> [!TIPO]) ---------- */
+.callout {
+  --accent: var(--teal);
+  --accent-bg: #eef6f9;
+  margin: 0;
+  padding: 12px 16px;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--accent-bg);
+  color: var(--text-strong);
+}
+
+.calloutTitle {
+  margin: 0;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.calloutTitle::before {
+  margin-right: 6px;
+}
+
+.calloutBody {
+  margin-top: 6px;
+}
+
+.calloutBody > * + * {
+  margin-top: 8px;
+}
+
+.callout_warning { --accent: #d97706; --accent-bg: #fff7e8; }
+.callout_warning .calloutTitle::before { content: '⚠'; }
+
+.callout_prize { --accent: #b7791f; --accent-bg: #fff9e1; }
+.callout_prize .calloutTitle::before { content: '🏆'; }
+
+.callout_danger { --accent: var(--hub-red); --accent-bg: #fff1f1; }
+.callout_danger .calloutTitle::before { content: '❗'; }
+
+.callout_tip { --accent: var(--green-shadow); --accent-bg: #f3f9e8; }
+.callout_tip .calloutTitle::before { content: '💡'; }
+
+.callout_info .calloutTitle::before { content: 'ℹ'; }

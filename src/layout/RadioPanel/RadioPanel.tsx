@@ -23,6 +23,7 @@ export interface RadioPanelProps {
   onArrowClick?: () => void
   /** Slots preenchidos pelo backend */
   banner?: ReactNode
+  /** caixa completa do TOP Eventos (ex.: <TopEventosBox />) */
   topEventos?: ReactNode
   habboStars?: ReactNode
   onVotarEnquete?: () => void
@@ -156,18 +157,21 @@ export function RadioPanel({
 
           <span className={styles.divider} aria-hidden="true" />
 
-          <Box
-            variant="bare"
-            accent="pink"
-            title={
-              <span className={styles.topTitle}>
-                TOP <span>Eventos</span>
-              </span>
-            }
-            minBodyHeight={176}
-          >
-            {topEventos}
-          </Box>
+          {/* topEventos = caixa completa (ex.: <TopEventosBox />); sem ela, a moldura vazia */}
+          <ErrorBoundary>
+            {topEventos ?? (
+              <Box
+                variant="bare"
+                accent="pink"
+                title={
+                  <span className={styles.topTitle}>
+                    TOP <span>Eventos</span>
+                  </span>
+                }
+                minBodyHeight={176}
+              />
+            )}
+          </ErrorBoundary>
 
           <span className={styles.divider} aria-hidden="true" />
 

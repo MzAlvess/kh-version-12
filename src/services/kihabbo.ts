@@ -211,8 +211,9 @@ function normalizeTags(raw: unknown): NewsTag[] {
 
 const normalizePost = (p: Post): Post => ({ ...p, tags: normalizeTags(p.tags) })
 
-export const getPosts = ({ page = 1, limit = 6 }, signal?: AbortSignal) =>
-  get<PostPage>(`/news/posts?page=${page}&limit=${limit}`, signal).then((d) => ({
+/** notícias publicadas; `tag` = slug da tag (ex.: 'eventos') filtra no servidor */
+export const getPosts = ({ page = 1, limit = 6, tag }: { page?: number; limit?: number; tag?: string }, signal?: AbortSignal) =>
+  get<PostPage>(`/news/posts?page=${page}&limit=${limit}${tag ? `&tag=${encodeURIComponent(tag)}` : ''}`, signal).then((d) => ({
     ...d,
     posts: d.posts.map(normalizePost),
   }))
