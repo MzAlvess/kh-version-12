@@ -10,8 +10,7 @@ import { useAsync } from '../hooks/useAsync'
 import { useModal } from '../modals/modalContext'
 import { discord } from '../content/kihabbo'
 import { avatarUrl } from '../services/habbo'
-import { getPlayerStatus, getPollCategories, getRanking } from '../services/kihabbo'
-import { DEFAULT_FIGURE } from '../features/HabboImager/figure'
+import { AUTODJ_HABBO, getPlayerStatus, getPollCategories, getRanking } from '../services/kihabbo'
 import styles from './pages.module.css'
 
 export function RadioPage({ userNick }: { userNick: string }) {
@@ -35,7 +34,7 @@ export function RadioPage({ userNick }: { userNick: string }) {
           <span className={styles.onAirStage}>
             <IsoTile width={120} thickness={10} tone="dark" className={styles.onAirTile} />
             <img
-              src={radio?.avatarUser ? avatarUrl({ user: radio.avatarUser, direction: 2, size: 'l' }) : avatarUrl({ figure: DEFAULT_FIGURE, direction: 2, size: 'l' })}
+              src={avatarUrl({ user: radio?.avatarUser ?? AUTODJ_HABBO, direction: 2, size: 'l' })}
               alt=""
               className={`${styles.onAirAvatar} pixel`}
             />

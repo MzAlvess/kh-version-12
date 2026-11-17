@@ -282,6 +282,9 @@ export interface PlayerStatus {
   radio: OnAir
 }
 
+/** Habbo cujo avatar representa o AutoDJ (quando ninguém está no ar) */
+export const AUTODJ_HABBO = 'KihabboVirus'
+
 const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : null)
 const obj = (v: unknown) => (v && typeof v === 'object' ? (v as Record<string, unknown>) : {})
 

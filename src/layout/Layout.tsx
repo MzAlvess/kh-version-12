@@ -1,9 +1,7 @@
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useAsync } from '../hooks/useAsync'
-import { avatarUrl } from '../services/habbo'
-import { getPlayerStatus } from '../services/kihabbo'
-import { DEFAULT_FIGURE } from '../features/HabboImager/figure'
+import { AUTODJ_HABBO, getPlayerStatus } from '../services/kihabbo'
 import { DestaquesBanner } from '../features/Destaques/DestaquesBanner'
 import { HabboStars } from '../features/HabboStars/HabboStars'
 import { TopEventosBox } from '../features/News/TopEventosBox'
@@ -54,11 +52,7 @@ export function Layout({ user, authLoading }: { user: HeaderUser | null; authLoa
           banner={<DestaquesBanner />}
           topEventos={<TopEventosBox />}
           habboStars={<HabboStars />}
-          locutorAvatarUrl={
-            radio?.avatarUser
-              ? habboAvatar(radio.avatarUser)
-              : avatarUrl({ figure: DEFAULT_FIGURE, direction: 4, size: 'm' })
-          }
+          locutorAvatarUrl={habboAvatar(radio?.avatarUser ?? AUTODJ_HABBO)}
         />
       </ErrorBoundary>
       <ErrorBoundary resetKey={pathname} message="Não foi possível exibir esta página agora.">
