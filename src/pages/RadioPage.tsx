@@ -22,7 +22,7 @@ export function RadioPage({ userNick }: { userNick: string }) {
   const polls = useAsync('polls', (s) => getPollCategories(s))
 
   const radio = status.data?.radio
-  const live = radio?.mode === 'live' && !!radio.locutor
+  const live = !!radio?.live
   const sortedRanking = ranking.data
     ? [...ranking.data].sort((a, b) => (period === 'month' ? b.hypeMonth - a.hypeMonth : b.hypeAllTime - a.hypeAllTime))
     : undefined
@@ -35,15 +35,15 @@ export function RadioPage({ userNick }: { userNick: string }) {
           <span className={styles.onAirStage}>
             <IsoTile width={120} thickness={10} tone="dark" className={styles.onAirTile} />
             <img
-              src={live ? avatarUrl({ user: radio!.locutor!, direction: 2, size: 'l' }) : avatarUrl({ figure: DEFAULT_FIGURE, direction: 2, size: 'l' })}
+              src={radio?.avatarUser ? avatarUrl({ user: radio.avatarUser, direction: 2, size: 'l' }) : avatarUrl({ figure: DEFAULT_FIGURE, direction: 2, size: 'l' })}
               alt=""
               className={`${styles.onAirAvatar} pixel`}
             />
           </span>
           <div className={styles.onAirInfo}>
             <span className={`${styles.onAirBadge} ${live ? styles.isLive : ''}`}>{live ? 'Ao vivo' : 'AutoDJ'}</span>
-            <strong>{status.error ? 'Status indisponível' : live ? radio!.locutor : 'AutoDJ'}</strong>
-            <p>{radio?.program ?? (live ? 'Programa ao vivo' : 'Programação automática')}</p>
+            <strong>{status.error ? 'Status indisponível' : radio?.name ?? 'AutoDJ'}</strong>
+            <p>{radio?.mode === 'locucao' ? radio.programName ?? 'Locução ao vivo' : live ? 'Programa ao vivo' : 'Programação automática'}</p>
             {radio?.trackTitle && <p className={styles.track}>♪ {radio.trackTitle}</p>}
             <div className={styles.actionsRow}>
               <Button tone="pink" href={radio?.streamUrl || discord.playerExterno}>

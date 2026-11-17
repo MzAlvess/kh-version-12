@@ -11,6 +11,7 @@ import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary'
 import { Footer } from './Footer/Footer'
 import { RouteTransition } from './RouteTransition'
 import { Header, type HeaderUser } from './Header/Header'
+import { habboAvatar } from './Header/menu'
 import { DEFAULT_STREAM_URL, RadioPanel } from './RadioPanel/RadioPanel'
 
 const STATUS_REFRESH_MS = 60_000
@@ -37,7 +38,7 @@ export function Layout({ user, authLoading }: { user: HeaderUser | null; authLoa
   }, [pathname, hash])
 
   const radio = (status.data ?? status.previous)?.radio
-  const live = radio?.mode === 'live' && !!radio.locutor
+  const live = !!radio?.live
 
   return (
     <>
@@ -46,14 +47,18 @@ export function Layout({ user, authLoading }: { user: HeaderUser | null; authLoa
       </ErrorBoundary>
       <ErrorBoundary>
         <RadioPanel
-          locutor={live ? radio!.locutor! : 'AutoDJ'}
-          programa={radio?.program ?? (live ? 'Ao vivo' : 'Programação automática')}
+          locutor={radio?.name ?? 'AutoDJ'}
+          programa={radio?.programName ?? (live ? 'Ao vivo' : 'Programação automática')}
           musica={radio?.trackTitle ?? 'Kihabbo — A Rádio do Habbo Hotel'}
           streamUrl={radio?.streamUrl || DEFAULT_STREAM_URL}
           banner={<DestaquesBanner />}
           topEventos={<TopEventosBox />}
           habboStars={<HabboStars />}
-          locutorAvatarUrl={live ? undefined : avatarUrl({ figure: DEFAULT_FIGURE, direction: 4, size: 'm' })}
+          locutorAvatarUrl={
+            radio?.avatarUser
+              ? habboAvatar(radio.avatarUser)
+              : avatarUrl({ figure: DEFAULT_FIGURE, direction: 4, size: 'm' })
+          }
         />
       </ErrorBoundary>
       <ErrorBoundary resetKey={pathname} message="Não foi possível exibir esta página agora.">

@@ -256,18 +256,70 @@ export const createComment = (postId: string, text: string, parentId?: string) =
 
 /* ============================== rádio ============================== */
 
+/**
+ * "No ar agora", já normalizado. Formato real de GET /v1/player/status (conferido no site atual):
+ * - mode: 'locucao' (locutor ao vivo) | 'programa' (programa com participantes) | 'autodj'
+ * - locutor: { id, name, avatarUser } — avatarUser é o nick no Habbo, usado no habbo-imaging
+ * - program: { name, image, participants: [{ id, name, avatarUser, isGuest }] }
+ */
+export interface OnAir {
+  mode: 'locucao' | 'programa' | 'autodj'
+  /** há alguém ao vivo (locução ou programa) */
+  live: boolean
+  /** nome exibido: locutor, programa ou "AutoDJ" */
+  name: string
+  /** nick do Habbo do locutor no ar (no programa: o primeiro participante da equipe) */
+  avatarUser: string | null
+  /** id do locutor no ar (para hype) */
+  locutorId: string | null
+  programName: string | null
+  programImage: string | null
+  trackTitle: string | null
+  streamUrl: string | null
+}
+
 export interface PlayerStatus {
-  radio: {
-    mode: 'autodj' | 'live' | string
-    streamUrl: string | null
-    startedAt: string | null
-    trackTitle: string | null
-    locutor: string | null
-    program: string | null
+  radio: OnAir
+}
+
+const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : null)
+const obj = (v: unknown) => (v && typeof v === 'object' ? (v as Record<string, unknown>) : {})
+
+function normalizeOnAir(raw: unknown): OnAir {
+  const r = obj(raw)
+  const locutor = obj(r.locutor)
+  const program = obj(r.program)
+  // versões antigas mandavam locutor/program como texto
+  const locutorName = str(r.locutor) ?? str(locutor.name)
+  const programName = str(r.program) ?? str(program.name)
+  const participants = Array.isArray(program.participants) ? program.participants.map(obj) : []
+  const host = participants.find((p) => !p.isGuest && str(p.avatarUser ?? p.name)) ?? participants[0]
+
+  const mode: OnAir['mode'] =
+    (r.mode === 'locucao' || r.mode === 'live') && locutorName ? 'locucao' : r.mode === 'programa' && programName ? 'programa' : 'autodj'
+
+  const avatarUser =
+    mode === 'locucao'
+      ? str(locutor.avatarUser) ?? locutorName
+      : mode === 'programa' && host
+        ? str(host.avatarUser) ?? str(host.name)
+        : null
+
+  return {
+    mode,
+    live: mode !== 'autodj',
+    name: mode === 'locucao' ? locutorName! : mode === 'programa' ? programName! : 'AutoDJ',
+    avatarUser,
+    locutorId: mode === 'locucao' ? str(locutor.id) : null,
+    programName,
+    programImage: str(program.image),
+    trackTitle: str(r.trackTitle),
+    streamUrl: str(r.streamUrl),
   }
 }
 
-export const getPlayerStatus = (signal?: AbortSignal) => get<PlayerStatus>('/player/status', signal)
+export const getPlayerStatus = (signal?: AbortSignal) =>
+  get<{ radio?: unknown }>('/player/status', signal).then((d): PlayerStatus => ({ radio: normalizeOnAir(d?.radio) }))
 
 export interface Locutor {
   id: string
