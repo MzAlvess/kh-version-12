@@ -334,12 +334,33 @@
     width: auto;
   }
 
+  /* no celular a faixa lateral vira uma faixa fina no topo e devolve a largura ao conteúdo */
+  .withStrip {
+    flex-direction: column;
+  }
+
   .withStrip .inner {
-    padding-left: 12px;
+    padding: 8px 8px 21px;
   }
 
   .strip {
-    flex-basis: 44px;
+    flex: 0 0 8px;
+    border-right: 0;
+    box-shadow: none;
+  }
+
+  .strip > * {
+    display: none;
+  }
+
+  /* altura mínima pensada para o desktop vira só um vão vazio na tela estreita */
+  .body {
+    min-height: min(var(--min-body), 120px);
+  }
+
+  /* caixas sem moldura (TOP Eventos, Habbo Stars) só ocupam o que o conteúdo pede */
+  .bare .body {
+    min-height: 0;
   }
 
   .pillGroup {

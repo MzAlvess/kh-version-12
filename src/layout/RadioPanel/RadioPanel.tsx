@@ -81,7 +81,7 @@ export function RadioPanel({
               <span className={styles.pillText}>{programa}</span>
             </span>
 
-            <button type="button" className={styles.round} onClick={onFavorite} aria-label="Favoritar">
+            <button type="button" className={`${styles.round} ${styles.fav}`} onClick={onFavorite} aria-label="Favoritar">
               <Icon name="star" size={18} />
             </button>
 

@@ -854,6 +854,13 @@
     text-align: center;
   }
 
+  /* em coluna o flex-basis viraria altura e o palco esticaria na largura (piso fora do avatar) */
+  .onAirStage {
+    flex: none;
+    width: 140px;
+    height: 200px;
+  }
+
   .onAirInfo .actionsRow {
     justify-content: center;
   }

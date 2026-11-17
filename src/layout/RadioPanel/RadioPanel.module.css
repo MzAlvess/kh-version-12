@@ -267,19 +267,42 @@
   }
 }
 
+/* celular: avatar à esquerda do locutor/programa, play embaixo do avatar */
 @media (max-width: 640px) {
-  .locutor,
+  .bar {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr) 43px;
+    grid-template-areas:
+      'av    loc   loc'
+      'av    prog  prog'
+      'play  vol   fav'
+      'music music music';
+    gap: 10px;
+    padding: 14px 14px 12px;
+  }
+
+  .controls {
+    display: contents;
+  }
+
+  .locutor {
+    grid-area: av;
+    margin: 0;
+  }
+
+  .wLocutor { grid-area: loc; }
+  .wPrograma { grid-area: prog; }
+  .wVolume { grid-area: vol; }
+  .music { grid-area: music; }
+  .fav { grid-area: fav; }
+
+  .play {
+    grid-area: play;
+    justify-self: center;
+  }
+
   .arrow {
     display: none;
-  }
-
-  .wLocutor,
-  .wPrograma {
-    flex: 1 1 140px;
-  }
-
-  .wVolume {
-    flex: 1 1 120px;
   }
 
   .grid {

@@ -119,9 +119,61 @@ a.newsCard:hover {
   }
 }
 
+/* celular: card em linha (capa à esquerda, título e meta à direita) em vez de 6 capas grandes empilhadas */
 @media (max-width: 600px) {
   .newsGrid {
     grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .newsCard {
+    flex-direction: row;
+    min-height: 96px;
+  }
+
+  .newsCover {
+    flex: 0 0 116px;
+    aspect-ratio: auto;
+  }
+
+  .newsCover img {
+    position: absolute;
+    inset: 0;
+  }
+
+  .tag {
+    left: 6px;
+    top: 6px;
+    max-width: calc(100% - 12px);
+    padding: 2px 7px;
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .newsBody {
+    min-width: 0;
+    gap: 4px;
+    padding: 10px 12px;
+  }
+
+  .newsBody > strong {
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .excerpt {
+    display: none;
+  }
+
+  .newsMeta {
+    padding-top: 0;
+    border-top: 0;
+    font-size: 11px;
   }
 }
 

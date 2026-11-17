@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import { IsoTile } from '../../components/IsoTile/IsoTile'
 import { menuLeft, menuRight, type MenuItem } from './menu'
 import { UserHub } from './UserHub'
@@ -27,6 +28,18 @@ function MenuTile({ item }: { item: MenuItem }) {
 }
 
 export function MenuBar({ user }: { user: HeaderUser | null }) {
+  const { pathname } = useLocation()
+  const mobileRow = useRef<HTMLUListElement>(null)
+
+  // celular: rola a linha até o tile da página atual (só na horizontal, sem mexer na página)
+  useEffect(() => {
+    const row = mobileRow.current
+    const current = row?.querySelector<HTMLElement>('[aria-current="page"]')
+    if (!row || !current || row.scrollWidth <= row.clientWidth) return
+    const li = current.parentElement ?? current
+    row.scrollLeft = li.offsetLeft - (row.clientWidth - li.offsetWidth) / 2
+  }, [pathname])
+
   return (
     <nav className={`container ${styles.bar}`} aria-label="Menu principal">
       <ul className={`${styles.group} ${styles.left}`}>
@@ -41,6 +54,13 @@ export function MenuBar({ user }: { user: HeaderUser | null }) {
 
       <ul className={`${styles.group} ${styles.right}`}>
         {menuRight.map((item) => (
+          <MenuTile key={item.id} item={item} />
+        ))}
+      </ul>
+
+      {/* celular: os 6 tiles numa linha só, com rolagem lateral e o nome visível (não há hover no toque) */}
+      <ul ref={mobileRow} className={styles.mobileRow}>
+        {[...menuLeft, ...menuRight].map((item) => (
           <MenuTile key={item.id} item={item} />
         ))}
       </ul>
